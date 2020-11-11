@@ -2,10 +2,8 @@ import React from "react";
 import './App.scss';
 import {Login,Register} from "./components/login";
 import logo from "./vectors/logo.png"
-import { Sidenav } from 'rsuite';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
-import {Dropdown} from 'semantic-ui-react';
-import {Toggle} from 'react-toggle';
+import Sidebar from './components/login/sidebar';
+
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -51,27 +49,14 @@ class App extends React.Component{
     const current = onLoginState ? "Register" : "Login";
     const currentActive = onLoginState? "login":"register";
     return (
-      <div className="body">
+      <div className="body">        
+        <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
         <div className="bg">
-
         <div className="logo">
-            <img src={logo} />
-          </div>
-        {/* <Sidenav className="sidenav">
-          <Sidenav.Body>
-          <Nav>
-          <Nav.Item eventKey="1" >
-            Dashboard
-          </Nav.Item>
-          <Nav.Item eventKey="2" >
-            User Group
-          </Nav.Item>
-          </Nav>
-          </Sidenav.Body>
-        </Sidenav> */}
-
-        <div className="App">
-          <div className="login">
+          <img src={logo} />
+        </div>
+        <div className="App">            
+          <div className="login">          
             <div className="container" ref={ref => (this.container = ref)}>
               {onLoginState && (<Login containerRef={ref => (this.current = ref)} />)}
               {!onLoginState && (<Register containerRef={ref => (this.current = ref)} />)}
