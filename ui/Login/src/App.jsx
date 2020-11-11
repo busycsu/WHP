@@ -2,15 +2,32 @@ import React from "react";
 import './App.scss';
 import {Login,Register} from "./components/login";
 import logo from "./vectors/logo.png"
-
+import { Sidenav } from 'rsuite';
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import {Dropdown} from 'semantic-ui-react';
+import {Toggle} from 'react-toggle';
 class App extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       onLoginState:true,
+      expanded: true,
+      activeKey: '1',
     };
-  }
+    this.handleToggle = this.handleToggle.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
 
+  }
+  handleToggle() {
+    this.setState({
+      expanded: !this.state.expanded
+    });
+  }
+  handleSelect(eventKey) {
+    this.setState({
+      activeKey: eventKey
+    });
+  }
 
   componentDidMount() {
     this.rightSide.classList.add("right");
@@ -30,22 +47,43 @@ class App extends React.Component{
 
   render(){
     const {onLoginState}  = this.state;
+    const { expanded } = this.state;
     const current = onLoginState ? "Register" : "Login";
     const currentActive = onLoginState? "login":"register";
     return (
-      <div className="bg">
+      <div className="body">
+        <div className="bg">
+
         <div className="logo">
-          <img src={logo} />
-        </div>
-      <div className="App">
-        <div className="login">
-          <div className="container" ref={ref => (this.container = ref)}>
-            {onLoginState && (<Login containerRef={ref => (this.current = ref)} />)}
-            {!onLoginState && (<Register containerRef={ref => (this.current = ref)} />)}
+            <img src={logo} />
           </div>
-          <RightSide current={current} currentActive={currentActive} containerRef={ref => (this.rightSide = ref)} onClick={this.changeState.bind(this)}/> 
+        {/* <Sidenav className="sidenav">
+          <Sidenav.Body>
+          <Nav>
+          <Nav.Item eventKey="1" >
+            Dashboard
+          </Nav.Item>
+          <Nav.Item eventKey="2" >
+            User Group
+          </Nav.Item>
+          </Nav>
+          </Sidenav.Body>
+        </Sidenav> */}
+
+        <div className="App">
+          <div className="login">
+            <div className="container" ref={ref => (this.container = ref)}>
+              {onLoginState && (<Login containerRef={ref => (this.current = ref)} />)}
+              {!onLoginState && (<Register containerRef={ref => (this.current = ref)} />)}
+            </div>
+            <RightSide current={current} currentActive={currentActive} containerRef={ref => (this.rightSide = ref)} onClick={this.changeState.bind(this)}/> 
+          </div>
         </div>
-      </div>
+        <div className="home_footer">
+          <p>SMART</p>
+          <p>UCSB @ well health</p>
+          </div>
+        </div>
       </div>
     )
   }

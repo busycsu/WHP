@@ -1,5 +1,5 @@
 import React from "react";
-import registImg from "../../vectors/Password.eps";
+import registImg from "../../vectors/Password.svg";
 import { BrowserRouter, Route, Switch,Link } from 'react-router-dom';
 import {Login} from './login';
 

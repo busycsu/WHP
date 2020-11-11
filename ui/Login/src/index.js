@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Sidenav } from 'rsuite';
+import {Nav} from 'react-bootstrap';
+
+console.log('Nav',Nav)
+console.log('Sidenav',Sidenav)
+
 
 ReactDOM.render(
   <React.StrictMode>

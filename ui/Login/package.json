@@ -9,9 +9,17 @@
     "node-sass": "^4.14.1",
     "react": "^17.0.1",
     "react-alert": "^7.0.2",
+    "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
+    "react-icons": "^3.11.0",
+    "react-native": "^0.63.3",
+    "react-native-elements": "^3.0.0-alpha.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+    "react-toggle": "^4.1.1",
+    "reactstrap": "^8.7.1",
+    "rsuite": "^4.8.4",
+    "semantic-ui-react": "^2.0.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -38,5 +46,7 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@babel/preset-react": "^7.12.5"
+  }
 }
