@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from 'react-router-dom';
+import fire from "../../contexts/AuthContext";
 import loginImg from "../../vectors/Login.eps";
 
 export class Login extends React.Component {
@@ -16,7 +17,20 @@ export class Login extends React.Component {
     if(userFound){
         this.props.history.push('/posts/');
     }
- }
+  }
+
+  login() {
+    const email = document.querySelector("#email").value;
+    const password = document.querySelector("#password").value;
+
+    fire.auth().signInWithEmailAndPassword(email, password)
+      .then((u) =>{
+        console.log("Successfully Logged in");
+      })
+      .catch((err) => {
+        console.log("Error: "+err.toString());
+      })
+  }
 
   render() {
     return (
@@ -30,16 +44,16 @@ export class Login extends React.Component {
           <div className="loginform">
             <div className="form-group">
               <label htmlFor="username">Username</label>
-              <input type="text" name="username" placeholder="username" />
+              <input id="email" type="text" name="username" placeholder="username" />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type="password" name="password" placeholder="password" />
+              <input id="password" type="password" name="password" placeholder="password" />
             </div>
           </div>
     </div>
     <div className="footer">
-        <button type="button" className="btn" >Login</button>
+        <button onClick={this.login.bind(this)} type="button" className="btn" >Login</button>
     </div>    
 </div>
     );
