@@ -22,7 +22,6 @@ export class Register extends React.Component{
 
     async clickSubmit(e){
         e.preventDefault();
-        await console.log("click print") 
         // try{
         //     await signup(this.state.email, this.state.password)
         // } catch{
@@ -33,11 +32,25 @@ export class Register extends React.Component{
         console.log(this.state.name)
         console.log(this.state.dateOfBirth)
         console.log(this.state.email)
+        
+        // await fire.database().ref('name').push(this.state.name)
+        // await fire.database().ref('DOB').push(this.state.dateOfBirth)
         await fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
         }).catch((error)=>{
             console.log(error);
         });
-        console.log("Account created")
+        let uid = fire.auth().currentUser.uid;
+        let usersRef = fire.database().ref().child('users/'+uid);
+        
+        usersRef.set({
+            basicInfo : {
+                username: this.state.userName,
+                DOB: this.state.dateOfBirth,
+                name: this.state.name,
+                email: this.state.email
+            }
+        })
+        console.log(fire.auth().currentUser.uid)
         
     }
 
