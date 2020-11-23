@@ -12,5 +12,3 @@ Google Fonts API
 
 ### Image usage:
 vector art @stories from freepik: https://www.freepik.com/stories
-
-Please contact [aoyama@ucsb.edu](aoyama@ucsb.edu) for any question.

@@ -1,6 +1,8 @@
 import React from 'react'
 import fire from '../../contexts/AuthContext'
-
+import Sidebar from './sidebar';
+import logo from "../../vectors/logo.png"
+import "./home.scss"
 class Home extends React.Component {
 
     constructor(props){
@@ -10,7 +12,6 @@ class Home extends React.Component {
             text: '',
             name: '',
             DOB: '',
-
         }
     }
 
@@ -55,23 +56,63 @@ class Home extends React.Component {
         if (this.state.wantRecord){
             console.log(this.state.name)
             console.log(this.state.DOB)
-            msg = <div>
-                <p>Here is your record</p>
+            // This should be temporary here for simple demo purpose,
+            // consider to move this a separate page or a large popup window 
+            // instead of makeing a div visible.
+            msg = <div className="record_msg">
+                    <h2>Here is your record</h2>
                     <p>Name: {this.state.name}</p>
                     <p>Date of Birth: {this.state.DOB}</p>
-            </div>
+                </div>
         } else {
             msg = <p></p>
         }
         return (
-            <div>
-                <h1> You are logged in..</h1>
-                <button onClick={ this.getRecords.bind(this) }>Get Electronic Health Record</button>
-                <button onClick={ this.logOut.bind(this) }>Logout</button>
-                <button onClick={(e) => (window.location = 'http://localhost:8000')}>Start Transcript!</button>
-                <button onClick = {this.helper.bind(this)}>Hide Record</button>
-                {msg}
+            
+            <div className="body">       
+                <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
+                <div className="bg">
+                
+                 <div className="logo">
+                     <img src={logo} />
+                </div>
+                <div className="home_body">
+                    <div className="home_msg">Welcome, {this.state.name} </div>
+                    
+                </div>
+                
+                <div style={{display:"flex"}}>          
+                    {msg}
+                    <div style={{marginTop:"13em"}}>
+                    <div class="box-1">
+                        <div class="buton btn-one" onClick={this.getRecords.bind(this)}>
+                            <span>Get Records</span>
+                        </div>
+                    </div>
+                    <div class="box-1">
+                        <div class="buton btn-one" onClick={this.helper.bind(this)}>
+                            <span>Hide Records</span>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="box-2">
+                        <div class="buton btn-two" onClick={(e) => (window.location = 'http://localhost:8000')}>
+                            <span style={{fontSize:"25px",marginTop:"16px"}}>Start Transcript</span>
+                        </div>
+                    </div>    
+
+                    <div class="box-3">
+                        <div class="buton btn-three" onClick={ this.logOut.bind(this) }>
+                            <span >Log out</span>
+                        </div>
+                    </div> 
+                    </div>
+            <div className="home_footer">
+              <p>SMART</p>
+              <p>UCSB @ well health</p>
+              </div>
             </div>
+          </div>
         )
     }
 }

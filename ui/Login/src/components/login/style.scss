@@ -103,6 +103,15 @@
     } 
     .footer{
         margin-top:0.2em;
+        .loader{
+            height:45px;
+            width: 45px;
+            align-content: center;
+            position: absolute;
+            justify-content: center;
+            padding-left: 93px;
+            visibility: hidden;
+        }
     }
 }
 

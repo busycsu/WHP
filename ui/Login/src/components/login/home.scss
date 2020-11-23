@@ -1,0 +1,219 @@
+// .body{
+    
+// }
+
+
+.home_msg{
+    position: absolute;
+    align-items: center;
+    align-self: center;
+    padding-top: 3em;
+    margin-left: 7em;
+    color: #d3cdbd;
+    font-family: 'Oswald', sans-serif;
+    font-size: 40px;
+}
+
+.home_msg2{
+    position: absolute;
+    padding-top: 6em;
+    margin-left: 6em;
+    color: #d3caaf;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 40px;;
+}
+
+.marg{
+    margin-top: 13em;
+}
+
+.box-1 { 
+    background-color: #d1ab79; 
+    height: 45px;
+    padding: 20px 10px;
+    width: 10em; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 25em;
+      margin-top: 2em;}
+.box-2 { background-color: #616060;
+    float: right;
+    position: absolute; 
+    height: 160px;
+    padding: 20px 20px;
+    width: 160px; 
+    display: flex;
+    justify-content: center;
+    margin-left: 39em;
+    margin-top: 15em;
+    align-items: center;
+    .span{
+        font-size: 100px;
+    }
+    }
+.box-3 { background-color: #66A182; 
+    height: 45px;
+    padding: 20px 10px;
+    width: 10em; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 18em;
+      margin-top: 22em;}
+
+.buton {
+line-height: 50px;
+height: 50px;
+text-align: center;
+width: 250px;
+cursor: pointer;
+
+}
+
+
+.btn-one {
+    color: #FFF;
+    transition: all 0.3s;
+    position: relative;
+    }
+    .btn-one span {
+    transition: all 0.3s;
+    }
+    .btn-one::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.3s;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-bottom-style: solid;
+    border-top-color: rgba(255,255,255,0.5);
+    border-bottom-color: rgba(255,255,255,0.5);
+    transform: scale(0.1, 1);
+    }
+    .btn-one:hover span {
+    letter-spacing: 2px;
+    }
+    .btn-one:hover::before {
+    opacity: 1;
+    transform: scale(1, 1);
+    }
+    .btn-one::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    transition: all 0.3s;
+    background-color: rgba(255,255,255,0.1);
+    }
+    .btn-one:hover::after {
+    opacity: 0;
+    transform: scale(0.1, 1);
+    }
+    
+    .btn-two {
+        color: #FFF;
+        transition: all 0.5s;
+        position: relative;
+        height: 100%;
+        }
+        .btn-two span {
+        z-index: 2;
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        
+        }
+        .btn-two::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        transition: all 0.5s;
+        border: 1px solid rgba(255,255,255,0.2);
+        background-color: rgba(255,255,255,0.1);
+        }
+        .btn-two::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        transition: all 0.5s;
+        border: 1px solid rgba(255,255,255,0.2);
+        background-color: rgba(255,255,255,0.1);
+        }
+        .btn-two:hover::before {
+          transform: rotate(-45deg);
+          background-color: rgba(255,255,255,0);
+        }
+        .btn-two:hover::after {
+          transform: rotate(45deg);
+          background-color: rgba(255,255,255,0);
+        }
+        
+.record_msg{
+    position: absolute;
+    background-color: #f7dccb;
+    margin-left: 80px;
+    margin-top: 195px;
+    width: 300px;
+    height: 450px;
+    text-align: center;
+    scroll-behavior: auto;
+    overflow-y: scroll;
+}
+
+.btn-three {
+    color: #FFF;
+    transition: all 0.5s;
+    position: relative;
+    }
+    .btn-three::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: rgba(255,255,255,0.1);
+    transition: all 0.3s;
+    }
+    .btn-three:hover::before {
+    opacity: 0 ;
+    transform: scale(0.5,0.5);
+    }
+    .btn-three::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.3s;
+    border: 1px solid rgba(255,255,255,0.5);
+    transform: scale(1.2,1.2);
+    }
+    .btn-three:hover::after {
+    opacity: 1;
+    transform: scale(1,1);
+    }
