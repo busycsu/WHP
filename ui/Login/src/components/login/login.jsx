@@ -28,6 +28,7 @@ export class Login extends React.Component {
         console.log("Successfully Logged in");
       })
       .catch((err) => {
+        document.getElementById("loader").style.visibility="hidden";
         console.log("Error: "+err.toString());
       })
   }
