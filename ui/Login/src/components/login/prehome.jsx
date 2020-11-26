@@ -14,16 +14,10 @@ class PreHome extends React.Component{
       expanded: true,
       activeKey: '1',
       user: null,
-
-      
     };
     this.handleToggle = this.handleToggle.bind(this);
     this.handleSelect = this.handleSelect.bind(this);
-
   }
-
-  
-  
 
   handleToggle() {
     this.setState({
@@ -56,7 +50,6 @@ class PreHome extends React.Component{
   }
 
   render(){
-    
     const {onLoginState}  = this.state;
     const { expanded } = this.state;
     const current = onLoginState ? "Register" : "Login";

@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from 'react-router-dom';
 import fire from "../../contexts/AuthContext";
 import loginImg from "../../vectors/Login.eps";
-
+import loader from '../../vectors/login_loader.gif';
 export class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -22,12 +22,13 @@ export class Login extends React.Component {
   login() {
     const email = document.querySelector("#email").value;
     const password = document.querySelector("#password").value;
-
+    document.getElementById("loader").style.visibility="visible";
     fire.auth().signInWithEmailAndPassword(email, password)
       .then((u) =>{
         console.log("Successfully Logged in");
       })
       .catch((err) => {
+        document.getElementById("loader").style.visibility="hidden";
         console.log("Error: "+err.toString());
       })
   }
@@ -52,10 +53,12 @@ export class Login extends React.Component {
             </div>
           </div>
     </div>
-    <div className="footer">
-        <button onClick={this.login.bind(this)} type="button" className="btn" >Login</button>
+    <div className="footer" style={{display:"flex"}}>
+        <button id = "loginbtn" onClick={this.login.bind(this)} type="button" className="btn" >Login</button>
+        <img className="loader" id="loader" src={loader}/>
     </div>    
 </div>
     );
   }
 }
+
