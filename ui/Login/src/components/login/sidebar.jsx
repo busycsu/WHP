@@ -3,7 +3,7 @@ import { slide as Menu } from 'react-burger-menu';
 import './sidebar.scss'
 import {BrowserRouter as Router,Switch, Route,Link, BrowserRouter} from "react-router-dom";
 import ReactDOM from "react-dom";
-import {AboutPage} from './About.jsx';
+// import {AboutPage} from './About.jsx';
 export default props => {
   return (
     <Router>
