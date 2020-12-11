@@ -3,6 +3,8 @@ import fire from '../../contexts/AuthContext'
 import Sidebar from './sidebar';
 import logo from "../../vectors/logo.png"
 import "./home.scss"
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
 class Home extends React.Component {
 
     constructor(props){
@@ -78,35 +80,45 @@ class Home extends React.Component {
                 </div>
                 <div className="home_body">
                     <div className="home_msg">Welcome, {this.state.name} </div>
-                    
+                
                 </div>
                 
                 <div style={{display:"flex"}}>          
                     {msg}
+                    <Router>
                     <div style={{marginTop:"13em"}}>
                     <div class="box-1">
                         <div class="buton btn-one" onClick={this.getRecords.bind(this)}>
-                            <span>Get Records</span>
+                            <span style={{fontWeight:"bold"}}>Get Records</span>
                         </div>
                     </div>
                     <div class="box-1">
                         <div class="buton btn-one" onClick={this.helper.bind(this)}>
-                            <span>Hide Records</span>
+                            <span style={{fontWeight:"bold"}}>Hide Records</span>
                         </div>
                     </div>
                     </div>
+                    
                     <div class="box-2">
                         <div class="buton btn-two" onClick={(e) => (window.location = 'http://localhost:8000')}>
-                            <span style={{fontSize:"25px",marginTop:"16px"}}>Start Transcript</span>
+                            <span style={{fontSize:"25px",marginTop:"16px",fontWeight:"bold"}}>Start Transcript</span>
                         </div>
                     </div>    
+                    <div style={{marginTop:"13em"}}>
+                        <div class="box-1" style={{marginLeft:"18em"}}>
+                        <div class="buton btn-one" onClick={this.helper.bind(this)}>
+                            <span style={{fontWeight:"bold"}}>Appointment</span>
+                        </div>
+                    </div>
 
-                    <div class="box-3">
+                    <div class="box-3" style={{marginLeft:"18em"}}>
                         <div class="buton btn-three" onClick={ this.logOut.bind(this) }>
                             <span >Log out</span>
                         </div>
                     </div> 
                     </div>
+                    </Router>
+                </div>
             <div className="home_footer">
               <p>SMART</p>
               <p>UCSB @ well health</p>

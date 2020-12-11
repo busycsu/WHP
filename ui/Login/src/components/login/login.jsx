@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from 'react-router-dom';
 import fire from "../../contexts/AuthContext";
-import loginImg from "../../vectors/Login.eps";
+import loginImg from "../../vectors/Login.png";
 import loader from '../../vectors/login_loader.gif';
 export class Login extends React.Component {
   constructor(props) {
