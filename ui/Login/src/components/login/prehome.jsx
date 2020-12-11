@@ -55,13 +55,13 @@ class PreHome extends React.Component{
     const current = onLoginState ? "Register" : "Login";
     const currentActive = onLoginState? "login":"register";
     return (
-      <div className="body">        
+      <div className="body" style={{minwidth:"900px"}}>        
         <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
         <div className="bg">
         <div className="logo">
           <img src={logo} />
         </div>
-        <div className="App">            
+        <div className="App" >            
           <div className="login">          
             <div className="container" ref={ref => (this.container = ref)}>
               {onLoginState && (<Login containerRef={ref => (this.current = ref)} />)}

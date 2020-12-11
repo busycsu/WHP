@@ -1,5 +1,5 @@
-import React,{ useRef, useState }  from "react";
-import registImg from "../../vectors/Password.svg";
+import React,{ useRef, useState , Fragment}  from "react";
+import registImg from "../../vectors/Password.png";
 import { BrowserRouter, Route, Switch,Link } from 'react-router-dom';
 import { Login } from './login';
 // import { useAuth } from '../../contexts/AuthContext'
@@ -105,7 +105,7 @@ export class Register extends React.Component{
                         </div>
                         <div className="form-group">
                             <label htmlFor="dob">Date of Birth</label>
-                            <input type="dob" name = "dob" placeholder="MM/DD/YYYY" value={this.state.dateOfBirth}
+                            <input type="date" name = "dob" placeholder="MM/DD/YYYY" value={this.state.dateOfBirth}
                                 onChange={evt => this.updateDOB(evt)}/>
                         </div>
                         <div className="form-group">
