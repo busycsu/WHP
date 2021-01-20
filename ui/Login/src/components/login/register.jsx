@@ -37,6 +37,7 @@ export class Register extends React.Component{
         // await fire.database().ref('DOB').push(this.state.dateOfBirth)
         await fire.auth().createUserWithEmailAndPassword(this.state.email, this.state.password).then((u)=>{
         }).catch((error)=>{
+            console.log("there is an unkonwn error")
             console.log(error);
         });
         let uid = fire.auth().currentUser.uid;
@@ -50,7 +51,7 @@ export class Register extends React.Component{
                 email: this.state.email
             }
         })
-        console.log(fire.auth().currentUser.uid)
+        console.log("uid:",fire.auth().currentUser.uid)
         
     }
 

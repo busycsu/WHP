@@ -5,8 +5,10 @@ import logo from "../../vectors/logo.png"
 import "./home.scss"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-class Home extends React.Component {
+import axios from 'axios';
 
+class Home extends React.Component {
+    
     constructor(props){
         super(props);
         this.state = {
@@ -14,6 +16,8 @@ class Home extends React.Component {
             text: '',
             name: '',
             DOB: '',
+            messages : [],
+            appoints: {},
         }
     }
 
@@ -21,23 +25,48 @@ class Home extends React.Component {
         fire.auth().signOut();
     }
 
+    transcriptPage(){
+        var body = {
+            uid: 'testinguid'
+        };
+        
+        axios.post('http://127.0.0.1:8080/', body)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     componentDidMount(){
-        let uid = fire.auth().currentUser.uid;
-        let path = 'users/'+uid+"/basicInfo";
-        let dataRefname = fire.database().ref(path);
-        dataRefname.on('value', snap=>{
-            console.log("name:"+snap.val())
-            this.setState({
-                name : snap.child('name').val(),
-                DOB : snap.child('DOB').val()
-            })
-        })
-        // let dataRefDOB = fire.database().ref(path).child('DOB')
-        // dataRefDOB.on('value', snap=>{
+        // let uid = fire.auth().currentUser.uid;
+        // let path = 'users/'+uid+"/basicInfo";
+        // let dataRefname = fire.database().ref(path);
+        // dataRefname.on('value', snap=>{
+        //     console.log("name:"+snap.val())
         //     this.setState({
-        //         DOB : snap.val() 
+        //         name : snap.child('name').val(),
+        //         DOB : snap.child('DOB').val()
         //     })
         // })
+        let uid = fire.auth().currentUser.uid;
+        let path = 'users/report';
+        let dataRefname = fire.database().ref(path);
+        var tmp_appoints = {}
+        dataRefname.on('value', snap=>{
+            snap.forEach(function(childNodes){
+                var tmp_html = childNodes.val().html;
+                var tmp_date = childNodes.val().datetime;
+                var tmp_list = [tmp_date,tmp_html];
+                var tmp_key = childNodes.key;
+                tmp_appoints[tmp_key] = tmp_list;
+                console.log(tmp_key)
+            })
+        })
+        this.state.appoints = tmp_appoints;
+        console.log("app:",this.state.appoints);
+        
     }
 
     getRecords(){
@@ -100,7 +129,8 @@ class Home extends React.Component {
                     </div>
                     
                     <div class="box-2">
-                        <div class="buton btn-two" onClick={(e) => (window.location = 'http://localhost:8000')}>
+                        {/* <div class="buton btn-two" onClick={(e) => (window.location = 'http://localhost:8000')}> */}
+                        <div class="buton btn-two" onClick={this.transcriptPage.bind(this)}>
                             <span style={{fontSize:"25px",marginTop:"16px",fontWeight:"bold"}}>Start Transcript</span>
                         </div>
                     </div>    
