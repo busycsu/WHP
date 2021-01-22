@@ -4,8 +4,8 @@ import Sidebar from './sidebar';
 import logo from "../../vectors/logo.png"
 import "./home.scss"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
 import axios from 'axios';
+import Modal from 'react-modal';
 
 class Home extends React.Component {
     
@@ -82,6 +82,18 @@ class Home extends React.Component {
         })
     }
 
+    refresh = () => {
+		this.setState({});
+    }
+
+    // for writing to a new tab
+    writePage(id, inner){
+        var newWindow = window.open("localhost:3000/"+id,"localhost:3000/"+id);
+        newWindow.document.open();
+        newWindow.document.write(inner);
+        newWindow.document.close();
+    }
+
     render(){
         let msg;
         if (this.state.wantRecord){
@@ -90,11 +102,26 @@ class Home extends React.Component {
             // This should be temporary here for simple demo purpose,
             // consider to move this a separate page or a large popup window 
             // instead of makeing a div visible.
-            msg = <div className="record_msg">
-                    <h2>Here is your record</h2>
-                    <p>Name: {this.state.name}</p>
-                    <p>Date of Birth: {this.state.DOB}</p>
+            if(Object.keys(this.state.appoints).length == 0){
+                msg = <div className="record_msg">
+                    <h2>Record History</h2>
+                    <p style={{opacity:'60%'}}>No past records available</p>
+                    <button onClick={this.refresh}>Refresh Button (placeholder)</button>
                 </div>
+            }else{
+                msg = <div className="record_msg">
+                        <h2>Record History</h2>
+                        <div>{
+                            Object.keys(this.state.appoints).map((key, index) => ( 
+                                <React.Fragment>
+                                {/* innerHtml content: 
+                                String(this.state.appoints[key]).split(",").slice(1,String(this.state.appoints[key]).split(",").length) */}
+                                <li><button key={index}>{String(this.state.appoints[key]).split(",")[0]}</button></li>
+                                </React.Fragment>
+                            ))}
+                        </div>
+                    </div>
+            }
         } else {
             msg = <p></p>
         }
@@ -111,7 +138,6 @@ class Home extends React.Component {
                     <div className="home_msg">Welcome, {this.state.name} </div>
                 
                 </div>
-                
                 <div style={{display:"flex"}}>          
                     {msg}
                     <Router>
