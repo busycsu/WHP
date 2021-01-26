@@ -88,6 +88,7 @@ class Home extends React.Component {
 
     // for writing to a new tab
     writePage(id, inner){
+        console.log("id:",inner)
         var newWindow = window.open("localhost:3000/"+id,"localhost:3000/"+id);
         newWindow.document.open();
         newWindow.document.write(inner);
@@ -114,9 +115,10 @@ class Home extends React.Component {
                         <div>{
                             Object.keys(this.state.appoints).map((key, index) => ( 
                                 <React.Fragment>
-                                {/* innerHtml content: 
+                                {
+                                /* innerHtml content: 
                                 String(this.state.appoints[key]).split(",").slice(1,String(this.state.appoints[key]).split(",").length) */}
-                                <li><button key={index}>{String(this.state.appoints[key]).split(",")[0]}</button></li>
+                                <li><button onClick={this.writePage.bind(this,key,String(this.state.appoints[key][1]))} key={index}>{String(this.state.appoints[key]).split(",")[0]}</button></li>
                                 </React.Fragment>
                             ))}
                         </div>
