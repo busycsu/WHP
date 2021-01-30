@@ -52,8 +52,9 @@ export class Register extends React.Component{
                 DOB: this.state.dateOfBirth,
                 name: this.state.name,
                 email: this.state.email,
-                userType: this.state.userType
-            }
+                
+            },
+            userType: this.state.userType
         })
         console.log("uid:",fire.auth().currentUser.uid)
         
