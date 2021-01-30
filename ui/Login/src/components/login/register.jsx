@@ -16,8 +16,10 @@ export class Register extends React.Component{
             name: '',
             dateOfBirth: '',
             email: '',
+            userType: '',
         }
-        
+        this.userTypeToDoctor = this.userTypeToDoctor.bind(this);
+        this.userTypeToPatient = this.userTypeToPatient.bind(this);
     }
 
     async clickSubmit(e){
@@ -32,6 +34,7 @@ export class Register extends React.Component{
         console.log(this.state.name)
         console.log(this.state.dateOfBirth)
         console.log(this.state.email)
+        console.log(this.state.userType)
         
         // await fire.database().ref('name').push(this.state.name)
         // await fire.database().ref('DOB').push(this.state.dateOfBirth)
@@ -48,7 +51,8 @@ export class Register extends React.Component{
                 username: this.state.userName,
                 DOB: this.state.dateOfBirth,
                 name: this.state.name,
-                email: this.state.email
+                email: this.state.email,
+                userType: this.state.userType
             }
         })
         console.log("uid:",fire.auth().currentUser.uid)
@@ -79,6 +83,15 @@ export class Register extends React.Component{
         this.setState({
             email: evt.target.value
         })
+    }
+    userTypeToDoctor(){
+        this.setState({userType: "doctor"})
+        console.log(this.userType)
+    }
+
+    userTypeToPatient(){
+        this.setState({userType: "patient"})
+        console.log(this.userType)
     }
 
     render(){
@@ -113,6 +126,10 @@ export class Register extends React.Component{
                             <label htmlFor="email">Email</label>
                             <input type="email" name = "email" placeholder="email" value={this.state.email}
                                 onChange={evt => this.updateEmail(evt)}/>
+                        </div>
+                        <div className="user_identity">
+                            <button className="doctor_button" onClick={this.userTypeToDoctor}><span>i am</span><br></br> DOCTOR</button>
+                            <button className="patient_button" onClick={this.userTypeToPatient}><span>i am</span><br></br>PATIENT</button>
                         </div>
                         
                     </div>

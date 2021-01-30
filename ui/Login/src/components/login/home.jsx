@@ -5,7 +5,7 @@ import logo from "../../vectors/logo.png"
 import "./home.scss"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
-import Modal from 'react-modal';
+import ReactModal from 'react-modal';
 
 class Home extends React.Component {
     
@@ -18,7 +18,10 @@ class Home extends React.Component {
             DOB: '',
             messages : [],
             appoints: {},
+            showModal:false,
         }
+        this.openModal = this.openModal.bind(this)
+        this.closeModal = this.closeModal.bind(this)
     }
 
     logOut(){
@@ -74,6 +77,7 @@ class Home extends React.Component {
             wantRecord : true,
             text : "hi",
         })
+        console.log(this.state.wantRecord)
     }
 
     helper(){
@@ -86,6 +90,14 @@ class Home extends React.Component {
 		this.setState({});
     }
 
+    openModal() {
+        this.setState({ showModal: true })
+    }
+  
+    closeModal() {
+        this.setState({ showModal: false })
+    }
+
     // for writing to a new tab
     writePage(id, inner){
         console.log("id:",inner)
@@ -95,24 +107,20 @@ class Home extends React.Component {
         newWindow.document.close();
     }
 
-    render(){
+    getReport = () => {
         let msg;
         if (this.state.wantRecord){
             console.log(this.state.name)
             console.log(this.state.DOB)
-            // This should be temporary here for simple demo purpose,
-            // consider to move this a separate page or a large popup window 
-            // instead of makeing a div visible.
             if(Object.keys(this.state.appoints).length == 0){
-                msg = <div className="record_msg">
-                    <h2>Record History</h2>
-                    <p style={{opacity:'60%'}}>No past records available</p>
-                    <button onClick={this.refresh}>Refresh Button (placeholder)</button>
+                msg = 
+                <div className="record_msg">
+                    <p id="p" style={{opacity:'60%', fontSize:"25px", fontWeight:"500px", paddingBottom:"3px"}}>No past records retrieved</p>
+                    <button id="refresh" style={{border:"2px solid #b9bfc0"}} onClick={this.refresh}>Refresh Here</button>
                 </div>
             }else{
                 msg = <div className="record_msg">
-                        <h2>Record History</h2>
-                        <div>{
+                        <div style={{overflow:"scroll", scrollBehavior:"auto"}}>{
                             Object.keys(this.state.appoints).map((key, index) => ( 
                                 <React.Fragment>
                                 {
@@ -126,63 +134,62 @@ class Home extends React.Component {
             }
         } else {
             msg = <p></p>
-        }
+    }
+        return msg
+    }
+
+    render(){   
         return (
-            
-            <div className="body">       
+            <div className="body">
                 <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
+
                 <div className="bg">
-                
-                 <div className="logo">
-                     <img src={logo} />
-                </div>
-                <div className="home_body">
-                    <div className="home_msg">Welcome, {this.state.name} </div>
-                
-                </div>
-                <div style={{display:"flex"}}>          
-                    {msg}
-                    <Router>
-                    <div style={{marginTop:"13em"}}>
-                    <div class="box-1">
-                        <div class="buton btn-one" onClick={this.getRecords.bind(this)}>
-                            <span style={{fontWeight:"bold"}}>Get Records</span>
-                        </div>
-                    </div>
-                    <div class="box-1">
-                        <div class="buton btn-one" onClick={this.helper.bind(this)}>
-                            <span style={{fontWeight:"bold"}}>Hide Records</span>
-                        </div>
-                    </div>
-                    </div>
-                    
-                    <div class="box-2">
-                        {/* <div class="buton btn-two" onClick={(e) => (window.location = 'http://localhost:8000')}> */}
-                        <div class="buton btn-two" onClick={this.transcriptPage.bind(this)}>
-                            <span style={{fontSize:"25px",marginTop:"16px",fontWeight:"bold"}}>Start Transcript</span>
-                        </div>
-                    </div>    
-                    <div style={{marginTop:"13em"}}>
-                        <div class="box-1" style={{marginLeft:"18em"}}>
-                        <div class="buton btn-one" onClick={this.helper.bind(this)}>
-                            <span style={{fontWeight:"bold"}}>Appointment</span>
-                        </div>
+                    <div className="logo">
+                        <img src={logo} />
                     </div>
 
-                    <div class="box-3" style={{marginLeft:"18em"}}>
-                        <div class="buton btn-three" onClick={ this.logOut.bind(this) }>
-                            <span >Log out</span>
+                    <div className="home_body" style={{marginLeft:"auto"},{marginRight:"auto"}}>
+
+                        <div className="button-container">
+                            <div className="home_msg">Welcome, {this.state.name} </div>
+
+                            <div className="button-canvas">
+                                <div className="button-item">
+                                    <button className="button button-pop" id="transcript_button" onClick={()=> {(window.location = 'http://localhost:8000');this.transcriptPage.bind(this)}}>Start Transcription</button>
+                                </div>
+
+                                <div className="button-item" >
+                                    <button className="button button-pop" id="get_record_button" onClick={()=>{this.getRecords();this.openModal();}} >Get Record</button>
+                                    <button className="button button-pop" id="logout_button" onClick={ this.logOut.bind(this) }>Log Out</button>
+
+                                </div>
+
+                                <div className="button-item">
+                                    <button className="button button-pop" id="appointment_button" onClick={this.helper.bind(this)}>Appointment</button>
+                                </div>
+
+                            </div>
+
                         </div>
-                    </div> 
+
                     </div>
-                    </Router>
+
                 </div>
-            <div className="home_footer">
-              <p>SMART</p>
-              <p>UCSB @ well health</p>
-              </div>
+                <ReactModal 
+                    isOpen={this.state.showModal}
+                    ariaHideApp={false}
+                    contentLabel="Minimal Modal Example"
+                    className="Modal"
+                    overlayClassName="Overlay"
+                    onRequestClose={this.closeModal}
+                    >
+                    <h1 style={{fontSize:"40px",textAlign:"center"}}>Record History</h1>
+
+                    {this.getReport()}
+                </ReactModal>
             </div>
-          </div>
+            
+
         )
     }
 }
