@@ -6,6 +6,7 @@ import Sidebar from './components/login/sidebar';
 import fire from './contexts/AuthContext'
 import Home from './components/login/home'
 import PreHome from './components/login/prehome'
+import HomeLoad from "./components/login/homeLoad";
 
 class App extends React.Component{
   constructor(props){
@@ -62,7 +63,7 @@ class App extends React.Component{
 
   render(){
     return (
-      <>{this.state.user ? (<Home/>) : (<PreHome/>)}</>
+      <>{this.state.user ? (<HomeLoad/>) : (<PreHome/>)}</>
     );
     // const {onLoginState}  = this.state;
     // const { expanded } = this.state;
