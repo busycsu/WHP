@@ -45,7 +45,7 @@ class HomeLoad extends React.Component {
     //     });
     // }
 
-    componentWillMount(){
+    componentDidMount(){
         
         let uid = fire.auth().currentUser.uid;
         let path = 'users/'+uid;
