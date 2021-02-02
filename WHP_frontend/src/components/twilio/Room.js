@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Participant from "./Participant";
+import Trans from "../aws/trans"
 
 const Room = ({ roomName, room, handleLogout }) => {
   const [participants, setParticipants] = useState([]);
@@ -34,10 +35,13 @@ const Room = ({ roomName, room, handleLogout }) => {
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
         {room ? (
+            <div>
           <Participant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
           />
+          <Trans />
+          </div>
         ) : (
           ""
         )}

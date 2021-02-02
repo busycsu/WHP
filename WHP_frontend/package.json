@@ -27,7 +27,12 @@
     "semantic-ui-react": "^2.0.1",
     "web-vitals": "^0.2.4",
     "twilio": "^3.54.2",
-    "twilio-video": "^2.10.0"
+    "twilio-video": "^2.10.0",
+    "@aws-sdk/eventstream-marshaller": "^3.4.1",
+    "@aws-sdk/util-utf8-node": "^3.4.1",
+    "crypto": "^1.0.1",
+    "microphone-stream": "^5.1.0",
+    "query-string": "^6.13.8"
   },
   "scripts": {
     "start": "react-scripts start",

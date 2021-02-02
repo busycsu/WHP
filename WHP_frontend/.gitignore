@@ -24,3 +24,4 @@ yarn-error.log*
 
 #config
 .env.local
+aws-credential.js
