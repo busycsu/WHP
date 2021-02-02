@@ -1,5 +1,8 @@
 import React from "react";
 import {credential} from '../aws/aws-credential';
+import AWS from 'aws-sdk';
+import fire from '../../contexts/AuthContext'
+import { type } from "os";
 
 const crypto = require('crypto'); // tot sign our pre-signed URL
 const mic = require('microphone-stream');
@@ -8,21 +11,24 @@ const audioUtils = require('../aws/audioUtils');
 const marshaller = require("@aws-sdk/eventstream-marshaller"); // for converting binary event stream messages to and from JSON
 const util_utf8_node = require("@aws-sdk/util-utf8-node"); // utilities for encoding and decoding UTF8
 
+
 const eventStreamMarshaller = new marshaller.EventStreamMarshaller(util_utf8_node.toUtf8, util_utf8_node.fromUtf8);
+// for comprehend
+const comprehendMedical = new AWS.ComprehendMedical(credential);
+
 
 let inputSampleRate;
 let micStream;
 let languageCode = "en-US";
 let sampleRate = 16000;
 let region = "us-west-2";
-let starttog = false;
-let stoptog = true;
+
 let socket;
 let transcribeException = false;
 let socketError = false;
 // let transcription = "";
 
-
+// transcription helper function
 function convertAudioToBinaryMessage(audioChunk) {
     let raw = mic.toRaw(audioChunk);
 
@@ -42,6 +48,7 @@ function convertAudioToBinaryMessage(audioChunk) {
     return binary;
 }
 
+// transcription helper function
 function getAudioEventMessage(buffer) {
     // wrap the audio data in a JSON envelope
     return {
@@ -57,6 +64,68 @@ function getAudioEventMessage(buffer) {
         },
         body: buffer
     };
+}
+
+// comprehension helper function
+function detectEntity(text) {
+    console.log('start!!!!!!!!!!!');
+    if(text === undefined || text.replace(/\s/g,"") === ""){
+        // Transcript is empty, nothing to detect, also CompMed would through exception
+        return [];
+    }
+    //clients can be shared by different commands
+    const params = {
+        Text: text,
+    };
+
+    console.log(`Send text ${text} to comprehend medical`);
+    return new Promise((resolve, reject) => {
+        comprehendMedical.detectEntitiesV2(params, function (err, data) {
+            if (err) {
+                console.log(err, err.stack); // an error occurred
+                reject(err);
+            }
+            else     {
+                // console.log(data);           // successful response
+                resolve(data);
+            }
+        })
+    });
+}
+// store report in the database helper function
+function storeReport(len, result, uid){
+    var currentdate = new Date(); 
+    var datetime = (currentdate.getMonth()+1) + "/"
+            + currentdate.getDate()  + "/" 
+            + currentdate.getFullYear() + " @ "  
+            + currentdate.getHours() + ":"  
+            + currentdate.getMinutes() + ":" 
+            + currentdate.getSeconds();
+    var date = Date.now()
+    var path = "users/"+uid+"/report/"+date;
+    var userRef = fire.database().ref().child(path);
+    userRef.set({
+        "datetime":datetime,
+    })
+    var contentPath = path+"/content";
+    
+    
+    for(var i = 0; i<len; i++){
+        var Term = result.Entities[i].Text;
+        var Category = result.Entities[i].Category;
+        var Type = result.Entities[i].Type;
+        var Score = result.Entities[i].Score;
+        var Traits = result.Entities[i].Traits;
+        var contentRef = fire.database().ref().child(contentPath+"/"+i);
+        contentRef.set({
+            Term:Term,
+            Category:Category,
+            Type:Type,
+            Score:Score,
+            Traits:Traits
+        })
+        
+    }
 }
 class Trans extends React.Component{
   constructor(props){
@@ -104,7 +173,7 @@ stop_button_click(){
 }
 setLanguage(){
     console.log('set language');
-    if (languageCode == "en-US" || languageCode == "es-US")
+    if (languageCode === "en-US" || languageCode === "es-US")
         // sampleRate = 44100;
         sampleRate = 16000;
     else
@@ -211,7 +280,7 @@ wireSocketEvents() {
         
         // the close event immediately follows the error event; only handle one.
         if (!socketError && !transcribeException) {
-            if (closeEvent.code != 1000) {
+            if (closeEvent.code !== 1000) {
                 console.log("Streaming Exception!!")
                 // showError('</i><strong>Streaming Exception</strong><br>' + closeEvent.reason);
             }
@@ -254,7 +323,7 @@ streamAudioToWebSocket(userMediaStream){
     socket = new WebSocket(url);
     socket.binaryType = "arraybuffer";
 
-    let sampleRate = 0;
+    // let sampleRate = 0;
 
     // when we get audio data from the mic, send it to the WebSocket if possible
     socket.onopen = function() {
@@ -277,9 +346,33 @@ streamAudioToWebSocket(userMediaStream){
       });
   }
 
+  generateReport = () =>{
+    // var tr = this.state.transcription;
+    var tr = 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.';
+    if(tr !== undefined && tr !== ""){
+        let uid = fire.auth().currentUser.uid;
+        console.log("uid",uid);
+        
+        var promise = detectEntity(tr);
+        
+
+        promise.then(function(result){
+            console.log("data: ",result);
+            storeReport(result.Entities.length,result, uid);
+            
+        }, function(err){
+            console.log("err: "+err);
+        });
+    }else{
+        console.log("transcription empty.");
+    }
+    
+  }
+
   componentDidMount() {
     // this.state.cls_trans = transcription;
     console.log("component did mount")
+    
   }
   componentWillMount() {
     // this.state.cls_trans = transcription;
@@ -312,6 +405,9 @@ streamAudioToWebSocket(userMediaStream){
                 </button>
                 <button id="reset-button" class="button-xl button-secondary" title="Clear Transcript" onClick={this.clear_transcript}> 
                     Clear Transcript
+                </button>
+                <button id="get-report" class="button-xl button-secondary" title="Get Report" onClick={this.generateReport}> 
+                    Get Report
                 </button>
             </div>
             

@@ -1,6 +1,6 @@
 import React from "react";
 import fire from '../../contexts/AuthContext'
-
+import VideoChat from '../twilio/VideoChat'
 class PatientHome extends React.Component{
   constructor(props){
     super(props);
@@ -27,13 +27,19 @@ class PatientHome extends React.Component{
       }
     })
   }
-
+  logOut = () =>{
+    fire.auth().signOut();
+  }
 
  
 
   render(){
     return (
-      <p>Patient</p>
+      <div>
+        <p>Patient</p>
+        <VideoChat />
+        <button  onClick={ this.logOut }>Log Out</button>
+      </div>
     );
     
   }

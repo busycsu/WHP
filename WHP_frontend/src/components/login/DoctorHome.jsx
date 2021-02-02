@@ -27,7 +27,9 @@ class DoctorHome extends React.Component{
       }
     })
   }
-
+  logOut = () =>{
+    fire.auth().signOut();
+  }
 
  
 
@@ -36,6 +38,8 @@ class DoctorHome extends React.Component{
       <div>
         <p>Doctor</p>
         <VideoChat />
+        <button className="button button-pop" id="logout_button" onClick={ this.logOut }>Log Out</button>
+
       </div>
     );
     
