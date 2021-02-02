@@ -52,7 +52,10 @@ class HomeLoad extends React.Component {
         let dataRefname = fire.database().ref(path);
         var tmp_appoints = {}
         dataRefname.on('value', snap=>{
-            this.state.userType = snap.child('userType').val();
+            this.setState({
+                userType: snap.child('userType').val()
+            })
+            // this.state.userType = snap.child('userType').val();
             console.log(snap.child('userType').val())
             console.log("userType1",this.state.userType);
             

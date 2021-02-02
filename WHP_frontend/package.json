@@ -2,6 +2,7 @@
   "name": "Login",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.1",
@@ -24,7 +25,9 @@
     "reactstrap": "^8.7.1",
     "rsuite": "^4.8.4",
     "semantic-ui-react": "^2.0.1",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "twilio": "^3.54.2",
+    "twilio-video": "^2.10.0"
   },
   "scripts": {
     "start": "react-scripts start",

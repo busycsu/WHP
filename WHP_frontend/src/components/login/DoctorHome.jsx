@@ -1,6 +1,6 @@
 import React from "react";
 import fire from '../../contexts/AuthContext'
-
+import VideoChat from '../twilio/VideoChat'
 class DoctorHome extends React.Component{
   constructor(props){
     super(props);
@@ -33,7 +33,10 @@ class DoctorHome extends React.Component{
 
   render(){
     return (
-      <p>Doctor</p>
+      <div>
+        <p>Doctor</p>
+        <VideoChat />
+      </div>
     );
     
   }
