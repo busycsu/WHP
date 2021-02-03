@@ -3,12 +3,11 @@ import fire from '../../contexts/AuthContext'
 import Sidebar from './sidebar';
 import logo from "../../vectors/logo.png"
 import "./home.scss"
-import { BrowserRouter as Switch, Router, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import ReactModal from 'react-modal';
-import DoctorPage from './doctor_home';
 
-class PatientHome extends React.Component {
+class DoctorHome extends React.Component {
     
     constructor(props){
         super(props);
@@ -25,7 +24,6 @@ class PatientHome extends React.Component {
         this.openModal = this.openModal.bind(this)
         this.closeModal = this.closeModal.bind(this)
         this.authListener = this.authListener.bind(this)
-
     }
 
     logOut(){
@@ -47,16 +45,6 @@ class PatientHome extends React.Component {
     }
 
     componentDidMount(){
-        // let uid = fire.auth().currentUser.uid;
-        // let path = 'users/'+uid+"/basicInfo";
-        // let dataRefname = fire.database().ref(path);
-        // dataRefname.on('value', snap=>{
-        //     console.log("name:"+snap.val())
-        //     this.setState({
-        //         name : snap.child('name').val(),
-        //         DOB : snap.child('DOB').val()
-        //     })
-        // })
         this.authListener();
         let uid = fire.auth().currentUser.uid;
         let path = 'users/report';
@@ -119,6 +107,8 @@ class PatientHome extends React.Component {
         var newWindow = window.open("http://localhost:3000/"+id,"http://localhost:3000/"+id);
         newWindow.document.write('<html><head><title>Report</title><link rel="stylesheet" type="text/css" href="styles.scss"></head><body>');
         newWindow.document.write(inner);
+        newWindow.document.getElementsByTagName("DIV")[0].contentEditable="true";
+        newWindow.document.write('<button>save</button>')
         newWindow.document.write('</body></html>');
     }
 
@@ -130,7 +120,7 @@ class PatientHome extends React.Component {
             if(Object.keys(this.state.appoints).length == 0){
                 msg = 
                 <div className="record_msg">
-                    <p id="p" style={{opacity:'60%', fontSize:"25px", fontWeight:"500px", paddingBottom:"3px"}}>No past records retrieved</p>
+                    <p id="p" style={{opacity:'60%', fontSize:"25px", fontWeight:"500px", paddingBottom:"3px"}}>No patient's records retrieved</p>
                     <button id="refresh" style={{border:"2px solid #b9bfc0"}} onClick={this.refresh}>Refresh Here</button>
                 </div>
             }else{
@@ -153,9 +143,9 @@ class PatientHome extends React.Component {
         return msg
     }
 
+    render(){   
+        console.log("int doctor home");
 
-    render(){  
-        console.log("in patient home"); 
         return (
             <div className="body">
                 <Sidebar pageWrapId={'page-wrap'} outerContainerId={'outer-container'} />
@@ -168,23 +158,18 @@ class PatientHome extends React.Component {
                     <div className="home_body" style={{marginLeft:"auto"},{marginRight:"auto"}}>
 
                         <div className="button-container">
-                            <div className="home_msg">Welcome, {this.state.name} </div>
+                            <div className="home_msg">Welcome, Doctor {this.state.name} </div>
 
                             <div className="button-canvas">
                                 <div className="button-item">
-                                    <button className="button button-pop" id="transcript_button" onClick={()=> {(window.location = 'http://localhost:8000');this.transcriptPage.bind(this)}}>Start Transcription</button>
+                                    <button className="button button-pop" id="transcript_button" onClick={()=>{this.getRecords();this.openModal();}}>Review Record</button>
                                 </div>
 
                                 <div className="button-item" >
-                                    <button className="button button-pop" id="get_record_button" onClick={()=>{this.getRecords();this.openModal();}} >Get Record</button>
+                                    <button className="button button-pop" id="get_record_button"  >Appointement</button>
                                     <button className="button button-pop" id="logout_button" onClick={ this.logOut.bind(this) }>Log Out</button>
 
                                 </div>
-
-                                <div className="button-item">
-                                    <button className="button button-pop" id="appointment_button" onClick={this.helper.bind(this)}>Appointment</button>
-                                </div>
-
                             </div>
 
                         </div>
@@ -201,14 +186,13 @@ class PatientHome extends React.Component {
                     onRequestClose={this.closeModal}
                     >
                     <h1 style={{fontSize:"40px",textAlign:"center"}}>Record History</h1>
+
                     {this.getReport()}
                 </ReactModal>
-                
             </div>
             
-
         )
     }
 }
 
-export default PatientHome;
+export default DoctorHome;

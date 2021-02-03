@@ -6,8 +6,9 @@ import "./home.scss"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import axios from 'axios';
 import ReactModal from 'react-modal';
-import DoctorHome from './DoctorHome';
-import PatientHome from './PatientHome';
+import DoctorHome from './doctor_home';
+import PatientHome from './home';
+import App from '../../App'
 
 class HomeLoad extends React.Component {
     
@@ -58,7 +59,9 @@ class HomeLoad extends React.Component {
             
         })
         console.log("userType2",this.state.userType);
-        
+        setTimeout(() => {
+            this.setState({loading: false}); }, 50);
+    
     }
 
     getRecords(){
@@ -115,7 +118,7 @@ class HomeLoad extends React.Component {
                                 {
                                 /* innerHtml content: 
                                 String(this.state.appoints[key]).split(",").slice(1,String(this.state.appoints[key]).split(",").length) */}
-                                <li><button onClick={this.writePage.bind(this,key,String(this.state.appoints[key][1]))} key={index}>{String(this.state.appoints[key]).split(",")[0]}</button></li>
+                                <li key={key}><button onClick={this.writePage.bind(this,key,String(this.state.appoints[key][1]))} key={index}>{String(this.state.appoints[key]).split(",")[0]}</button></li>
                                 </React.Fragment>
                             ))}
                         </div>
@@ -127,9 +130,11 @@ class HomeLoad extends React.Component {
         return msg
     }
 
-    render(){   
+    render(){  
+        console.log(this.state.userType == ''); 
         return (
             <>{this.state.userType=="doctor" ? (<DoctorHome/>) : (<PatientHome/>)}</>
+
         );
     }
 }
