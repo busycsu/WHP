@@ -3,6 +3,7 @@ import {credential} from '../aws/aws-credential';
 import AWS from 'aws-sdk';
 import fire from '../../contexts/AuthContext'
 import { type } from "os";
+import axios from 'axios'
 
 const crypto = require('crypto'); // tot sign our pre-signed URL
 const mic = require('microphone-stream');
@@ -127,6 +128,16 @@ function storeReport(len, result, uid){
         
     }
 }
+
+async function generateDoctorReport(){
+    const data = await fetch("/uid")
+        .then((res) => 
+          res.json()
+        ).then(function(responseJson){
+            return responseJson.id
+        })
+    console.log(data)
+  }
 class Trans extends React.Component{
   constructor(props){
     super(props);
@@ -346,26 +357,33 @@ streamAudioToWebSocket(userMediaStream){
       });
   }
 
+
   generateReport = () =>{
     // var tr = this.state.transcription;
-    var tr = 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.';
-    if(tr !== undefined && tr !== ""){
-        let uid = fire.auth().currentUser.uid;
-        console.log("uid",uid);
+    var uid={id:fire.auth().currentUser.uid};
+    axios.post('http://localhost:3001/uid',uid)
+        .then(()=>console.log("uid send"))
+        .catch(err => {
+            console.log(err);
+        });
+    // var tr = 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.';
+    // if(tr !== undefined && tr !== ""){
+    //     let uid = fire.auth().currentUser.uid;
+    //     console.log("uid",uid);
         
-        var promise = detectEntity(tr);
+    //     var promise = detectEntity(tr);
         
 
-        promise.then(function(result){
-            console.log("data: ",result);
-            storeReport(result.Entities.length,result, uid);
+    //     promise.then(function(result){
+    //         console.log("data: ",result);
+    //         storeReport(result.Entities.length,result, uid);
             
-        }, function(err){
-            console.log("err: "+err);
-        });
-    }else{
-        console.log("transcription empty.");
-    }
+    //     }, function(err){
+    //         console.log("err: "+err);
+    //     });
+    // }else{
+    //     console.log("transcription empty.");
+    // }
     
   }
 
@@ -408,6 +426,9 @@ streamAudioToWebSocket(userMediaStream){
                 </button>
                 <button id="get-report" class="button-xl button-secondary" title="Get Report" onClick={this.generateReport}> 
                     Get Report
+                </button>
+                <button id="get-report" class="button-xl button-secondary" title="Get Report" onClick={generateDoctorReport}> 
+                    Get Doctor Report
                 </button>
             </div>
             
