@@ -1,5 +1,5 @@
 import React from "react";
-import {credential} from '../aws/aws-credential';
+import {credential} from '../../contexts/aws-credential';
 import AWS from 'aws-sdk';
 import fire from '../../contexts/AuthContext'
 import { type } from "os";
