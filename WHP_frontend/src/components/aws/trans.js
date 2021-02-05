@@ -360,30 +360,25 @@ streamAudioToWebSocket(userMediaStream){
 
   generateReport = () =>{
     // var tr = this.state.transcription;
-    var uid={id:fire.auth().currentUser.uid};
-    axios.post('http://localhost:3001/uid',uid)
-        .then(()=>console.log("uid send"))
-        .catch(err => {
-            console.log(err);
-        });
-    // var tr = 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.';
-    // if(tr !== undefined && tr !== ""){
-    //     let uid = fire.auth().currentUser.uid;
-    //     console.log("uid",uid);
+
+    var tr = 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.';
+    if(tr !== undefined && tr !== ""){
+        let uid = fire.auth().currentUser.uid;
+        console.log("uid",uid);
         
-    //     var promise = detectEntity(tr);
+        var promise = detectEntity(tr);
         
 
-    //     promise.then(function(result){
-    //         console.log("data: ",result);
-    //         storeReport(result.Entities.length,result, uid);
+        promise.then(function(result){
+            console.log("data: ",result);
+            storeReport(result.Entities.length,result, uid);
             
-    //     }, function(err){
-    //         console.log("err: "+err);
-    //     });
-    // }else{
-    //     console.log("transcription empty.");
-    // }
+        }, function(err){
+            console.log("err: "+err);
+        });
+    }else{
+        console.log("transcription empty.");
+    }
     
   }
 

@@ -1,7 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
+import fire from "../../contexts/AuthContext";
 import Lobby from "./Lobby";
 import Room from "./Room";
+
 
 const VideoChat = () => {
     const [username, setUsername] = useState("");
@@ -31,6 +33,23 @@ const VideoChat = () => {
             "Content-Type": "application/json",
           },
         }).then((res) => res.json());
+
+        let uid = fire.auth().currentUser.uid;
+        let path = 'users/'+uid;
+        let dataRefname = fire.database().ref(path);
+        var userType;
+        dataRefname.on('value', snap=>{
+            userType = snap.child('userType').val();
+            if(userType === "patient"){
+                fire.database().ref().child("Rooms/"+roomName+"/"+uid).set({type:userType});
+            }else if(userType === "doctor"){
+                fire.database().ref().child("users/"+uid+"/rooms/"+roomName).set({
+                    type:userType
+                });
+            }
+            
+        })
+
         Video.connect(data.token, {
           name: roomName,
         })
