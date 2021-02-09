@@ -142,7 +142,7 @@ class Trans extends React.Component{
   constructor(props){
     super(props);
     this.state = {
-        transcription : ""
+        transcription : "",
         
     }
     this.start_button_click = this.start_button_click.bind(this);
@@ -262,6 +262,8 @@ wireSocketEvents() {
                         //scroll the textarea down
                         // $('#transcript').scrollTop($('#transcript')[0].scrollHeight);
                         console.log("this is",this)
+                        
+
                         this.setState({
                             transcription: this.state.transcription+transcript + "\n"
                         })
@@ -360,7 +362,18 @@ streamAudioToWebSocket(userMediaStream){
 
   generateReport = () =>{
     // var tr = this.state.transcription;
-
+    // 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.\
+    // Lemme see. You’ve moderate fever. This thermometer is very different from the one you used the last time. \
+    // Yes, this is a new introduction by medical equipment companies. It’s much more convenient, as it doesn’t require cleaning after every use.\
+    // That’s awesome.\
+    // Yes it is. Not too high – 99.8. Your blood pressure is fine. It looks bit scruffy. Not good.  Yes, it has been quite bad.\
+    // Do you get sweating and shivering? Not sweating, but I feel somewhat cold when I sit under a fan.\
+    // OK. You’ve few symptoms of malaria. I would suggest you undergo blood test. Nothing to worry about. In most cases, the test come out to be negative. It’s just precautionary, as there have been spurt in malaria cases in the last month or so.\
+    // I’m prescribing three medicines and a syrup. The number of dots in front of each tells you how many times in the day you’ve to take them. For example, the two dots here mean you’ve to take the medicine twice in the day, once in the morning and once after dinner.\
+    // Do you have any allergies?\
+    // Yes, I am allergic to aspirin and peanuts.\
+    // Do you’ve any other questions?\
+    // No, doctor. Thank you.'
     var tr = 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.';
     if(tr !== undefined && tr !== ""){
         let uid = fire.auth().currentUser.uid;
