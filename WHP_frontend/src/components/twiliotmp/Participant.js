@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import './Room.css';
-import './Lobby.css';
 
 const Participant = ({ participant }) => {
   const [videoTracks, setVideoTracks] = useState([]);
@@ -66,8 +64,8 @@ const Participant = ({ participant }) => {
 
   return (
     <div className="participant">
-      <h3 className="partTitle">Local Participant: {participant.identity}</h3>
-      <video className="videoname"ref={videoRef} autoPlay={true} />
+      <h3>{participant.identity}</h3>
+      <video ref={videoRef} autoPlay={true} />
       <audio ref={audioRef} autoPlay={true} muted={true} />
     </div>
   );

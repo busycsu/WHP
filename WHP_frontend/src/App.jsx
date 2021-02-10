@@ -4,7 +4,7 @@ import {Login,Register} from "./components/login";
 import logo from "./vectors/logo.png"
 import Sidebar from './components/login/sidebar';
 import fire from './contexts/AuthContext'
-import Home from './components/login/home'
+// import Home from './components/login/home'
 import PreHome from './components/login/prehome'
 import HomeLoad from "./components/login/homeLoad";
 

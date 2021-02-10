@@ -1,0 +1,44 @@
+.room{
+    padding-top:8em;
+    padding-left: 2em;
+    text-align:  center;
+    border-style: dashed;
+    border-radius: 5px;
+    border-color: #557174;
+    height: 60%;
+
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 3px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.room_item1{
+    padding-bottom: 7px;
+    display: inline-block;
+    width:40%;
+}
+
+
+
+.room_item{
+    padding: 0 5px;
+    padding-bottom: 7px;
+    overflow: auto;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    width:60%;
+    height:100%;
+}
+
+.videoname{
+    padding-left: 2em;
+    height:220px;
+    width: 90%;
+}
+
+.partTitle{
+    color:rgb(199, 216, 216);
+}

@@ -3,6 +3,8 @@ import '../../App.scss';
 import {Login,Register} from "./"
 import logo from "../../vectors/logo.png"
 import Sidebar from './sidebar';
+import fire from '../../contexts/AuthContext'
+import Home from './home'
 
 class PreHome extends React.Component{
   constructor(props){

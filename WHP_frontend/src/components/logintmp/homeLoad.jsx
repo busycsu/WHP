@@ -4,11 +4,10 @@ import Sidebar from './sidebar';
 import logo from "../../vectors/logo.png"
 import "./home.scss"
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import axios from "../../../node_modules/axios";
+import axios from 'axios';
 import ReactModal from 'react-modal';
-import DoctorHome from './doctor_home';
-import PatientHome from './patient_home';
-import VideoPage from './VideoPage';
+import DoctorHome from './DoctorHome';
+import PatientHome from './PatientHome';
 
 class HomeLoad extends React.Component {
     

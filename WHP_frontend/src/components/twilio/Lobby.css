@@ -1,0 +1,65 @@
+#div{
+    height: 100%;
+}
+.room_form{
+    padding-top:8em;
+    padding-left: 2em;
+    text-align:  center;
+    border-style: dashed;
+    border-radius: 5px;
+    border-color: #557174;
+    height: 60%;
+}
+
+.room_form label{
+    color: aliceblue;
+    font-size: 20px;
+    padding-bottom: 3px;
+    transition:0.2s;
+    
+}
+
+.room_form div{
+    padding-bottom: 30px;
+}
+
+.room_form input{
+    width:30%;
+    border:0;
+    border-radius: 0px;
+    border-bottom: solid 1px #ffffff;
+    background:transparent;
+    outline: 0;
+    font-size: 30px;
+    color:white;
+}
+.room_form input:placeholder-shown ~ .label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+
+  :hover::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: rgb(202, 201, 201);
+  }
+  :focus::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: transparent;
+  }
+
+.joinRoom{
+    background: #a1aee7;
+    color: #fff;
+    font-size: 20px;
+    padding: 0.4em;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    width:30%
+}
+.joinRoom:hover {
+    border: 1px solid white;
+    transform: scale(1.05);
+    background-color: #faf8f8; opacity: 70%;
+    font-weight: 600;
+    color:#514692;
+    cursor:pointer;
+  }
