@@ -1,9 +1,12 @@
 import React from "react";
 import {credential} from '../../contexts/aws-credential';
-import AWS from 'aws-sdk';
+import AWS, { Discovery } from 'aws-sdk';
 import fire from '../../contexts/AuthContext'
 import { type } from "os";
 import axios from 'axios'
+import './trans.css'
+import hightlighter from "react-highlight-words"
+import Highlighter from "react-highlight-words";
 
 const crypto = require('crypto'); // tot sign our pre-signed URL
 const mic = require('microphone-stream');
@@ -15,7 +18,9 @@ const util_utf8_node = require("@aws-sdk/util-utf8-node"); // utilities for enco
 
 const eventStreamMarshaller = new marshaller.EventStreamMarshaller(util_utf8_node.toUtf8, util_utf8_node.fromUtf8);
 // for comprehend
+console.log("credential before created", credential)
 const comprehendMedical = new AWS.ComprehendMedical(credential);
+console.log(comprehendMedical)
 
 
 let inputSampleRate;
@@ -138,6 +143,8 @@ async function generateDoctorReport(){
         })
     console.log(data)
   }
+
+
 class Trans extends React.Component{
   constructor(props){
     super(props);
@@ -215,8 +222,8 @@ createPresignedUrl() {
         {
             // 'key': $('#access_id').val(),
             // 'secret': $('#secret_key').val(),
-            'key': credential.accessKeyId,
-            'secret': credential.secretAccessKey,
+            'key': process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+            'secret': process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
             // 'key': process.env.AWS_ACCESS_KEY_ID,
             // 'secret': process.env.AWS_SECRET_ACCESS_KEY,
             // 'sessionToken': $('#session_token').val(),
@@ -359,7 +366,6 @@ streamAudioToWebSocket(userMediaStream){
       });
   }
 
-
   generateReport = () =>{
     // var tr = this.state.transcription;
     // 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.\
@@ -395,11 +401,101 @@ streamAudioToWebSocket(userMediaStream){
     
   }
 
+  getTerms = () =>{
+    // var tr = 'Good evening. You look pale and your voice is out of tune.  Yes doctor. I’m running a temperature and have a sore throat.';
+    var tr = this.state.transcription;
+    var tmp = this;
+    if(tr !== undefined && tr !== ""){
+        let uid = fire.auth().currentUser.uid;
+        console.log("uid",uid);
+        
+        var promise = detectEntity(tr);
+        
+
+        promise.then(function(result){
+            console.log("data: ",result);
+            tmp.hightlight(result.Entities.length,result);
+            
+        }, function(err){
+            console.log("err: "+err);
+        });
+    }else{
+        console.log("transcription empty.");
+    }
+  }
+
+  hightlight = (len, result) =>{
+    var tmp = []
+    for(var i = 0; i<len; i++){
+        var Term = result.Entities[i].Text;
+        tmp.push(Term);
+    }
+    this.setState({
+            wordsList: tmp,
+            startHighlight: true,
+            ifExplain: true
+    })
+    console.log("list", this.state.wordsList)
+  }
+
   componentDidMount() {
     // this.state.cls_trans = transcription;
     console.log("component did mount")
+    console.log("credential", credential)
+    // this.cheatingbutton()
+    let uid = fire.auth().currentUser.uid;
+    let path = 'users/'+uid;
+    let dataRefname = fire.database().ref(path);
+    dataRefname.on('value', snap=>{
+        this.state.userType = snap.child('userType').val();
+        console.log(snap.child('userType').val())
+        
+    })
+    
+    console.log("userType in mount", this.state.userType);
+
+    this.bufferListner();
     
   }
+  cheatingbutton = () => {
+    var date = Date.now()
+    var sentence = "Good evening. You look pale and your voice is out of tune.";
+    var tmpType = "Doctor"
+    // var sentence = "Yes doctor. I'm running a temperature and have a sore throat.";
+    // var tmpType = "Patient"
+    // var sentence = "Do you get sweating and shivering?";
+    // var tmpType = "Doctor"
+    // var sentence = "Not sweating, but I feel somewhat cold when I sit under a fan.";
+    // var tmpType = "Patient"
+    // var sentence = "OK. You’ve few symptoms of malaria. I would suggest you undergo blood test.";
+    // var tmpType = "Doctor"
+    console.log("user type", this.state.userType);
+    if(sentence !== ""){
+        var path = "Buffer/"+date;
+        var userRef = fire.database().ref().child(path);
+        userRef.set({
+            type: tmpType,
+            sentence : sentence
+
+        })
+    }
+  }
+
+  bufferListner = () =>{
+      var ref = fire.database().ref("Buffer");
+      var tmp = this;
+      ref.on("child_added", function (snapshot, prevChildKey) {
+          var sentence = snapshot.val().sentence;
+          var person = snapshot.val().type;
+          var tmpSentence = person +": "+sentence+"\n";
+          tmp.setState({
+              transcription : tmp.state.transcription+tmpSentence
+              
+          });
+
+      })
+  }
+
   componentWillMount() {
     // this.state.cls_trans = transcription;
     console.log("component will mount")
@@ -409,40 +505,70 @@ streamAudioToWebSocket(userMediaStream){
  
 
   render(){
+    const startHighlight = this.state.startHighlight;
+    const getExplain = this.state.ifExplain;
     return (
-      <div>
-        <h1>
+      <div className="top">
+        <h1 style={{color:"rgb(199, 216, 216)"}}>
             Real-time Audio Transcription
         </h1>
 
         
         {/* <textarea id="transcript" placeholder="Press Start and speak into your mic"  value= {this.state.cls_trans} rows="5"
             readonly="readonly"></textarea> */}
-            <p>{this.state.transcription}</p>
+            
             {/* <input type="text" value={this.state.cls_trans} onChange={this.handleChange}/>
                 <h4>{this.state.cls_trans}</h4> */}
-        <div class="row">
-            <div class="col">
-                <button id="start-button" class="button-xl" title="Start Transcription" onClick={this.start_button_click}>
-                    <i class="fa fa-microphone"></i> Start
+        <div className="row">
+            <div className="col">
+                <button id="start-button" className="button-xl" title="Start Transcription" onClick={this.start_button_click}>
+                    <i className="fa fa-microphone"></i> Start
                 </button>
-                <button id="stop-button" class="button-xl" title="Stop Transcription" onClick={this.stop_button_click}><i
-                        class="fa fa-stop-circle"></i> Stop
+                <button id="stop-button" className="button-xl" title="Stop Transcription" onClick={this.stop_button_click}><i
+                        className="fa fa-stop-circle"></i> Stop
                 </button>
-                <button id="reset-button" class="button-xl button-secondary" title="Clear Transcript" onClick={this.clear_transcript}> 
+                <button id="reset-button" className="button-xlbutton-secondary" title="Clear Transcript" onClick={this.clear_transcript}> 
                     Clear Transcript
                 </button>
-                <button id="get-report" class="button-xl button-secondary" title="Get Report" onClick={this.generateReport}> 
+                <button id="get-report" className="button-xlbutton-secondary" title="Get Report" onClick={this.generateReport}> 
                     Get Report
                 </button>
-                <button id="get-report" class="button-xl button-secondary" title="Get Report" onClick={generateDoctorReport}> 
-                    Get Doctor Report
+                <button id="get-report" className="button-xlbutton-secondary" title="Get Term" onClick={this.getTerms}> 
+                    Get Term
                 </button>
             </div>
             
             {/* <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="../../transcription_dist/amazon-transcribe-websocket-static/dist/main.js"></script> */}
         </div>
+
+            <div className="term_explanation">
+                <div className="texttranscribe" style = {{textAlign:"left"}}>
+                    {/* {this.state.transcription} */}
+                    
+                    {this.state.transcription.split("\n").map((i,key) => {
+                        return <div  key={key}>
+                        {startHighlight
+                            ?<Highlighter 
+                                searchWords={this.state.wordsList}
+                                autoEscape={true}
+                                textToHighlight={i}
+                                />
+                            :<div>{i}</div>
+                        }
+                        </div>
+                    })}
+                </div>
+                {getExplain
+                ?
+                <div className="textexplanation">
+                    {"Malaria: a human disease that is caused by sporozoan parasites in the red blood cells, is transmitted by the bite of anopheline mosquitoes, and is characterized by periodic attacks of chills and fever"}
+                </div>
+                :<textarea className="textexplanation"></textarea>
+                }
+                
+                
+            </div>
 
       </div>
     );

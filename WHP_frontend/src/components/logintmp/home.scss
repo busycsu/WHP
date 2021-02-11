@@ -1,0 +1,227 @@
+.body{
+    overflow: scroll;
+}
+
+.home_msg{
+    width: auto;
+    position:relative;
+    align-items: center;
+    align-self: center;
+    padding-top: 3em;
+    color: #d3cdbd;
+    font-family: 'Oswald', sans-serif;
+    font-size: 40px;
+}
+
+.home_msg2{
+    position: absolute;
+    padding-top: 6em;
+    margin-left: 6em;
+    color: #d3caaf;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 40px;;
+}
+
+.marg{
+    margin-top: 13em;
+}
+
+
+// getRecord modal content        
+.record_msg{
+    background:transparent;
+    width: 100%;
+    height: 460px;
+    text-align: center;
+    scroll-behavior: auto;
+    overflow: scroll;
+    list-style-type: circle;
+    float: left;
+}
+
+.record_msg button{
+    cursor: pointer;
+    border:none;
+    background: transparent;
+    font-size: 20px;
+    padding-top: 17px;
+    padding-bottom: 17px;
+    margin-top:2px;
+    margin-bottom: 2px;
+    color: #614a2c;
+    font-weight: 300px;
+    border-radius: 15px;
+    &:hover{
+        background-color:#b9bfc0;
+    }
+    &:focus{
+        outline:none;
+    }
+}
+
+.record_msg #p{
+    opacity: 60%;
+    font-size: 25px;
+}
+
+.record_msg #refresh{
+    background-color:"#ff2312";
+    border: 2px #614a2c
+}
+
+// buttons for functionalities
+.button-container{
+    overflow: scroll;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.button-canvas {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 3px;
+    margin-left: auto;
+    margin-right: auto;
+}
+    
+.button-item {  
+    flex: 32%;
+    max-width: 33%;
+    padding: 0 5px;
+    padding-bottom: 7px;
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.button {
+    cursor: pointer;
+    border: none;
+    font-size: 20px;
+    position: relative;
+    min-width: 12rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+
+.button:focus{
+    outline: none;
+}
+
+@media screen and (max-width: 1130px) {
+    .button-item {
+        flex: 50%;
+        max-width: 48%;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .button-item{
+        flex: 100%;
+        max-width: 90%;
+    }
+}
+
+.button-pop{
+    border-radius: 45px;
+    padding: 0.6rem 2rem 0.4rem;
+    text-transform: uppercase;
+    border: 1px solid white;
+    color: white;
+    background: transparent;
+    font-size: 25px;
+    transition: transform 100ms ease-in-out;
+}
+
+#transcript_button{
+    width: 12em;
+    height:18em;
+    color:#c7cfb7;
+    &:hover {
+        border: 3px solid white;
+        transform: scale(1.05);
+        background-color: #c7cfb7; opacity: 70%;
+        font-weight: 600;
+        color:#74624c;
+      }
+}
+
+#get_record_button{
+    width:12em;
+    height: 12em;
+    color:#d3e0ea;
+    &:hover {
+        border: 3px solid white;
+        transform: scale(1.05);
+        background-color: #d3e0ea; opacity: 70%;
+        font-weight: 600;
+        color:#74624c;      }
+}
+
+#appointment_button{
+    width:12em;
+    height: 18em;
+    color:#e4c9ca;
+    &:hover {
+        border: 3px solid white;
+        transform: scale(1.05);
+        background-color: #e4c9ca; opacity: 70%;
+        font-weight: 600;
+        color:#74624c;
+
+      }
+}
+
+#logout_button{
+    width:12em;
+    color:#ecb390;
+    height: 4em;
+    &:hover {
+        border: 3px solid white;
+        transform: scale(1.05);
+        background-color: #ecb390; opacity: 70%;
+        font-weight: 600;
+        color:#614a2c;
+
+      }
+}
+
+
+
+// modal for getRecord
+.Modal {
+    position: absolute;
+    width: 50%;
+    height: 70%;
+    top: 50%;
+    left: 50%;
+    display: block;
+    padding: 2em;
+    min-width: 20em;
+    max-width: 100%;
+    color: #557174;
+    background-color: #f8f1f1;
+    border-radius: 1em;
+    transform: translate(-50%, -50%);
+    outline: transparent;
+  }
+  .Overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,.4);
+  }
+
+
+// report division
+.report_div{
+    width:70%;
+}
+
+.report_list{
+    padding-top:5px;
+    padding-bottom: 5px;
+}
