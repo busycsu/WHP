@@ -152,6 +152,8 @@ class Trans extends React.Component{
         transcription : "",
         
     }
+    this.transRef = React.createRef();
+
     this.start_button_click = this.start_button_click.bind(this);
     this.setLanguage = this.setLanguage.bind(this);
     this.setRegion = this.setRegion.bind(this);
@@ -501,6 +503,9 @@ streamAudioToWebSocket(userMediaStream){
     console.log("component will mount")
   }
 
+  testingBtn =() =>{
+      console.log(this.transRef.current)
+  }
 
  
 
@@ -536,6 +541,9 @@ streamAudioToWebSocket(userMediaStream){
                 <button id="get-report" className="button-xlbutton-secondary" title="Get Term" onClick={this.getTerms}> 
                     Get Term
                 </button>
+                <button id="get-report" className="button-xlbutton-secondary" title="Get Term" onClick={this.testingBtn}> 
+                    Testing
+                </button>
             </div>
             
             {/* <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -543,7 +551,7 @@ streamAudioToWebSocket(userMediaStream){
         </div>
 
             <div className="term_explanation">
-                <div className="texttranscribe" style = {{textAlign:"left"}}>
+                <div className="texttranscribe" style = {{textAlign:"left"}} contentEditable="true" ref={this.transRef}>
                     {/* {this.state.transcription} */}
                     
                     {this.state.transcription.split("\n").map((i,key) => {
@@ -554,7 +562,7 @@ streamAudioToWebSocket(userMediaStream){
                                 autoEscape={true}
                                 textToHighlight={i}
                                 />
-                            :<div>{i}</div>
+                            :<div ref={this.transRef}>{i}</div>
                         }
                         </div>
                     })}
@@ -562,7 +570,9 @@ streamAudioToWebSocket(userMediaStream){
                 {getExplain
                 ?
                 <div className="textexplanation">
-                    {"Malaria: a human disease that is caused by sporozoan parasites in the red blood cells, is transmitted by the bite of anopheline mosquitoes, and is characterized by periodic attacks of chills and fever"}
+                    {"Malaria: a human disease that is caused by sporozoan parasites in the red blood cells, \
+                    is transmitted by the bite of anopheline mosquitoes, \
+                    and is characterized by periodic attacks of chills and fever"}
                 </div>
                 :<textarea className="textexplanation"></textarea>
                 }
