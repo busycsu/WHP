@@ -196,6 +196,7 @@ class Trans extends React.Component{
         //     console.log("error!!!")
         // });
   }
+  
 stop_button_click(){
     this.closeSocket();
 }
@@ -495,7 +496,7 @@ streamAudioToWebSocket(userMediaStream){
       ref.on("child_added", function (snapshot, prevChildKey) {
           var sentence = snapshot.val().sentence;
           var person = snapshot.val().type;
-          var tmpSentence = person +": "+sentence+"\n";
+          var tmpSentence = person +": "+sentence;
           tmp.setState({
               transcription : tmp.state.transcription+tmpSentence
               
@@ -510,9 +511,32 @@ streamAudioToWebSocket(userMediaStream){
   }
 
   testingBtn =() =>{
-      console.log(this.transRef.current)
+    console.log(this.state.transcription);
+    const node = this.transRef.current;
+    console.log(node.innerHTML);
+    var str = this.htmltotext(node.innerHTML);
+    console.log("str",str);
+    this.setState({
+        transcription:str
+    })
+    console.log("trans",this.state.transcription);
+
+    
   }
 
+  htmltotext = (html) =>{
+    var ans = html;
+    ans = ans.replaceAll("<div></div>","")
+    ans = ans.replaceAll("<div>","");
+    ans = ans.replaceAll("</div>","\n");
+    ans = ans.replaceAll("&nbsp;","");
+    ans = ans.replaceAll("<br>","")
+    return ans;
+  }
+  
+  updateText(evt){
+      console.log("change detected")
+  }
  
 
   render(){
@@ -557,20 +581,21 @@ streamAudioToWebSocket(userMediaStream){
         </div>
 
             <div className="term_explanation">
-                <div className="texttranscribe" style = {{textAlign:"left"}} contentEditable="true" ref={this.transRef}>
+                <div className="texttranscribe" style = {{textAlign:"left"}} contentEditable="true" ref={this.transRef} onChange={this.updateText}>
                     {/* {this.state.transcription} */}
-                    
+                    {/* testing */}
                     {this.state.transcription.split("\n").map((i,key) => {
-                        return <div  key={key}>
-                        {startHighlight
+                        // return <div  key={key}>
+                        {/* {startHighlight
                             ?<Highlighter 
                                 searchWords={this.state.wordsList}
                                 autoEscape={true}
                                 textToHighlight={i}
                                 />
-                            :<div ref={this.transRef}>{i}</div>
-                        }
-                        </div>
+                            :<div classname="transresult" ref={this.transRef} value="this?" onChange={evt => this.updateText(evt)}>{i}</div>
+                        } */}
+                       return <div>{i}</div>
+                        // </div>
                     })}
                 </div>
                 {getExplain
