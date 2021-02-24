@@ -214,7 +214,7 @@ class PatientHome extends React.Component {
         var uid = fire.auth().currentUser.uid;
 
         // delete next
-        uid = 'eL91jm42z3b8HBshTb4OAUSwZqA2';
+        // uid = 'eL91jm42z3b8HBshTb4OAUSwZqA2';
 
         var reportRef = fire.database().ref("users/"+uid+"/report");
 
