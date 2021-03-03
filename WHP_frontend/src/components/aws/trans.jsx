@@ -8,8 +8,8 @@ import './trans.css'
 
 const crypto = require('crypto'); // tot sign our pre-signed URL
 const mic = require('microphone-stream');
-const v4 = require('../aws/aws-signature-v4'); // to generate our pre-signed URL
-const audioUtils = require('../aws/audioUtils'); 
+const v4 = require('./aws-signature-v4'); // to generate our pre-signed URL
+const audioUtils = require('./audioUtils'); 
 const marshaller = require("@aws-sdk/eventstream-marshaller"); // for converting binary event stream messages to and from JSON
 const util_utf8_node = require("@aws-sdk/util-utf8-node"); // utilities for encoding and decoding UTF8
 
@@ -607,19 +607,14 @@ class Trans extends React.Component{
                 globalDic:{},
                 transcription: ""
             })
-            console.log("The globalDic in removed", tmp.state.globalDic);
+            
         })
+        console.log("The globalDic in removed", tmp.state.globalDic);
     }
 
-    componentWillMount() {
-    // this.state.cls_trans = transcription;
-    console.log("component will mount")
-    }
 
     setChangeBtn =() =>{
-        console.log(this.state.transcription);
-        const node = this.transRef.current;
-        console.log(node.innerHTML.textContent);
+        console.log("set change click")
         const comp = document.querySelector('.texttranscribe');
         const title = comp.children;
         console.log(title);
@@ -631,7 +626,7 @@ class Trans extends React.Component{
             var localname = title[i].localName;
             var innertext = title[i].innerText;
             var date = title[i].className;
-            console.log(localname,innertext,date);
+            console.log("loop in set change",localname,innertext,date);
             
             if(localname=="span" && date!==""){
                 realDate = date;
@@ -671,24 +666,20 @@ class Trans extends React.Component{
     }
 
     addBufferRoot = () =>{
+        console.log("add buffer root")
         var ref = fire.database().ref("Buffer");
         ref.set({"padding":""})
     }
 
     clearBuffer = () =>{
+        console.log("clear the buffer")
         var ref = fire.database().ref("Buffer");
         ref.once('value',function(snapshot){
             snapshot.forEach(function(childSnapshot){
                 ref.child(childSnapshot.key).remove();
             })
         })
-        // ref.remove()
-        //     .then(function(){
-        //         console.log("Remove successed.")
-        //     })
-        //     .catch(function(error){
-        //         console.log("Remove failed: "+error.message)
-        //     })
+        console.log("clear buffer completed")
     }
 
     htmltotext = (html) =>{
@@ -774,53 +765,64 @@ class Trans extends React.Component{
         console.log("rerender")
         console.log("list",this.state.extractedList)
         var html = [];
-        // html.push(<span>hi</span>);
-        // html.push(<span style={{backgroundColor: 'rgb(111, 154, 245)'}} onClick={this.pOnChange}>two</span>);
-        // html.push(<br />);
-        
-        // html.push(<span>hi</span>);
-        // html.push(<span style={{backgroundColor: 'rgb(111, 154, 245)'}} onClick={this.pOnChange}>two</span>);
+
+        // loop through every sentence
         var dic = this.state.globalDic;
         for (var key in dic){
             var sentence = dic[key]["Sentence"];
             console.log(key,dic[key]["Sentence"]);
             html.push(<span className={key} style={{fontWeight: "bold"}}>{dic[key]["Person"]+": "}</span>)
-            // var tmpWL = dic[key]["wl"];
-            // var tmpWL = this.state.extractedList;
+
             var tmpWL = [];
+            console.log("highlightDic", this.state.highlightDic);
+            // this dic is the full entities, I want to only keep medical condition, medication, test and treatment
             for(var key in this.state.highlightDic){
-                tmpWL.push(key);
+                if(this.state.highlightDic[key]["Category"]=="MEDICAL_CONDITION" || this.state.highlightDic[key]["Category"]=="MEDICATION"||
+                    this.state.highlightDic[key]["Category"]=="TEST_TREATMENT_PROCEDURE"){
+                        tmpWL.push(key);
+                    }
             }
-            if(tmpWL===undefined||tmpWL.length==0){
-                html.push(<span>{sentence}</span>);
-                html.push(<br />)
-            }else{
+            console.log(tmpWL);
+            // end of the clean list.
+
+            // check if the highlight dic is empty if so just print normal sentence
+            if(tmpWL===undefined || tmpWL.length===0){
+                html.push(<span>{sentence}</span>)
+            }
+            // if highlight dic contains words, find out all the segments.
+            else{
                 var indexStart = 0;
                 var indexEnd = sentence.length;
+                // loop through the list to see if words in this sentence
                 for(var i in tmpWL){
-                    console.log("####the value i is:",tmpWL[i]);
+                    // get word and index position
                     var word = tmpWL[i];
                     var breakPoint = sentence.indexOf(word);
-                    if(breakPoint===-1){ 
-                        if(i==tmpWL.length-1){
-                            html.push(<span>{sentence.substring(indexStart,indexEnd) + " "}</span>);
+                    // if word (tmpWL[i]) not in this sentence, continue
+                    if(breakPoint == -1){
+                        // check if it reach the end of the list, if so print last portion
+                        if(i == tmpWL.length-1){
+                            console.log("reach the end of the list")
+                            html.push(<span id="normal_sentence">{sentence.substring(indexStart,indexEnd)}</span>)
                         }else{
-                            continue
+                            continue;
                         }
-                    }else{
-                        console.log("detected")
-                        // reentered won't capture all the things.
-                        // if found ther terms
-                        html.push(<span>{sentence.substring(indexStart,breakPoint) + " "}</span>);
+                    }
+                    // if word (tmpWL[i]) in this sentence, push word left plain, push highlight word, if last word in list, push right also
+                    else{
+                        // push word left
+                        html.push(<span id="normal_sentence">{sentence.substring(indexStart,breakPoint)}</span>)
                         indexStart = breakPoint;
-                        indexEnd = breakPoint+word.length;
+                        indexEnd = indexStart + word.length;
+                        // push highlihg word, different color with different categories(symptom, diagnosis, medicaition, procedure, negation)
                         if(this.state.highlightDic[word]["Category"]=="MEDICAL_CONDITION"){
                             var traits = this.state.highlightDic[word]["Traits"]
-                            // to see if it has traits
+                            // if condition, check if it's symptom or diagnosis, first see if traits is empty
                             if(traits.length==0)
                                 html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(111,154,245'}}>{sentence.substring(indexStart,indexEnd)}</span>)
                             else{
                                 // check negation
+                                var traits = this.state.highlightDic[word]["Traits"]
                                 var negate = false;
                                 var symptoms = false;
                                 var diagnosis = false;
@@ -849,24 +851,90 @@ class Trans extends React.Component{
                         }
                         indexStart = indexEnd;
                         indexEnd = sentence.length;
+                        // if reach the last one in the list push right also
                         if(i==tmpWL.length-1){
+                            console.log("find it and reach the end")
                             html.push(<span>{sentence.substring(indexStart,indexEnd) + " "}</span>);
                         }
                     }
-
-                    // var word = tmpWL[i]
-                    // var indexEnd = sentence.indexOf(word);
-                    // if(indexEnd >=0){
-                    //     html.push(<span>{sentence.substring(indexStart,indexEnd) + " "}</span>);
-                    //     indexStart = indexEnd;
-                    //     indexEnd += word.length;
-                    //     html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(111,154,245'}}>{sentence.substring(indexStart,indexEnd)}</span>)
-                    // }
-                    // indexStart = indexEnd;
                 }
-                html.push(<br />)
             }
+            // next line
+            html.push(<br />)
+
+            // var tmpWL = [];
+            // for(var key in this.state.highlightDic){
+            //     tmpWL.push(key);
+            // }
+            // if(tmpWL===undefined||tmpWL.length==0){
+            //     html.push(<span>{sentence}</span>);
+            //     html.push(<br />)
+            // }else{
+            //     var indexStart = 0;
+            //     var indexEnd = sentence.length;
+            //     for(var i in tmpWL){
+            //         console.log("####the value i is:",tmpWL[i]);
+            //         var word = tmpWL[i];
+            //         var breakPoint = sentence.indexOf(word);
+            //         if(breakPoint===-1){ 
+            //             if(i==tmpWL.length-1){
+            //                 console.log("no terms last one",sentence.substring(indexStart,indexEnd))
+            //                 html.push(<span>{sentence.substring(indexStart,indexEnd) + " "}</span>);
+            //                 console.log("push succeed")
+            //             }else{
+            //                 continue
+            //             }
+            //         }else{
+            //             console.log("detected")
+            //             // reentered won't capture all the things.
+            //             // if found ther terms
+            //             html.push(<span>{sentence.substring(indexStart,breakPoint) + " "}</span>);
+            //             indexStart = breakPoint;
+            //             indexEnd = breakPoint+word.length;
+            //             if(this.state.highlightDic[word]["Category"]=="MEDICAL_CONDITION"){
+            //                 var traits = this.state.highlightDic[word]["Traits"]
+            //                 // to see if it has traits
+            //                 if(traits.length==0)
+            //                     html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(111,154,245'}}>{sentence.substring(indexStart,indexEnd)}</span>)
+            //                 else{
+            //                     // check negation
+            //                     var negate = false;
+            //                     var symptoms = false;
+            //                     var diagnosis = false;
+            //                     for(var t_i in traits){
+            //                         if(traits[t_i]["Name"]=="SYMPTOM")
+            //                             symptoms=true;
+            //                         else if(traits[t_i]["Name"]=="DIAGNOSIS")
+            //                             diagnosis=true;
+            //                         else if(traits[t_i]["Name"]=="NEGATION")
+            //                             negate=true;
+            //                     }
+            //                     if(negate == true){
+            //                         html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(187,69,79'}}>{sentence.substring(indexStart,indexEnd)}</span>)                     
+            //                     }else{
+            //                         if(symptoms == true)
+            //                             html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(111,154,245'}}>{sentence.substring(indexStart,indexEnd)}</span>)
+            //                         else if(diagnosis == true){
+            //                             html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(154,111,245'}}>{sentence.substring(indexStart,indexEnd)}</span>)
+            //                         }
+            //                     }
+            //                 }
+            //             }else if(this.state.highlightDic[word]["Category"]=="TEST_TREATMENT_PROCEDURE"){
+            //                 html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(245,154,111'}}>{sentence.substring(indexStart,indexEnd)}</span>)
+            //             }else if(this.state.highlightDic[word]["Category"]=="MEDICATION"){
+            //                 html.push(<span onClick={this.pOnChange(word)} style={{backgroundColor:'rgb(105,194,152'}}>{sentence.substring(indexStart,indexEnd)}</span>)
+            //             }
+            //             indexStart = indexEnd;
+            //             indexEnd = sentence.length;
+            //             if(i==tmpWL.length-1){
+            //                 html.push(<span>{sentence.substring(indexStart,indexEnd) + " "}</span>);
+            //             }
+            //         }
+        //         }
+        //         html.push(<br />)
+        //     }
         }
+        // console.log("get to the end")
         return html;
     }
 
@@ -931,7 +999,7 @@ class Trans extends React.Component{
                     <button id="get-report" className="button-xlbutton-secondary" title="Get Term" onClick={this.getWL}> 
                         Get Term
                     </button>
-                    <button id="get-report" className="button-xlbutton-secondary" title="Save Changes" onClick={this.setChangeBtn}> 
+                    <button id="set-report" className="button-xlbutton-secondary" title="Save Changes" onClick={this.setChangeBtn}> 
                         Save Changes
                     </button>
                 </div>

@@ -137,73 +137,185 @@ class PatientHome extends React.Component {
         // head style
         newWindow.document.write('<html><head><title>Report</title><style>');
         newWindow.document.write("</style>");
-        // body
-        newWindow.document.write("</head><body className='bg' style='background-color:#e2e6e9'><div style='margin-left:auto;margin-right:auto;width:70%; padding-top:2em; overflow-y:scroll;'>");
-        newWindow.document.write("<div className='info' style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);border:none; padding-left:2em; padding-right:2em; padding-top:0.5em; padding-bottom:0.4em; border-width:0.1px; border-radius:10px; background-color:#86a3c3; opacity:80%; font-size:20px;'>");
-        newWindow.document.write("<p className='nameLabel' > Patient Name:  <span style='color:white;font-size:30px;'>"+name+"</span></p>");
-        newWindow.document.write("<p className='dobLabel'> Date of Birth: <span style='color:white;font-size:30px;'>"+ DOB+ "</span></p>");
-        
-        newWindow.document.write("<p className='data1'> Appointment Time: <span style='color:white;font-size:30px;'>"+id+"</span></p>")
+
+        // Title
+        newWindow.document.write("<div className='info' style='width:50%; margin-left:auto; margin-right:auto; border:none; padding-left:2em; padding-right:2em; padding-top:1em; padding-bottom:4em; border-width:0.1px; border-radius:10px; background-color:#FFFFFF; opacity:80%; font-size:40px; font-weight:2000;'>");
+        newWindow.document.write("<div style='text-align:center;'>Clinical Summary</div>");
+
+        // general information head with grey color
+        newWindow.document.write("<body className='bg' style='background-color:#e2e6e9'><div style='margin-left:auto;margin-right:auto;width:100%; padding-top:0.5em;'>");
+        newWindow.document.write("<div className='info' style='width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:17px;'>");
+        newWindow.document.write("<b style='font-size:20px;font-weight:700;'> General Information </b>");
         newWindow.document.write("</div>");
-        // Symptoms
-        newWindow.document.write("<div style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#d9dab0; opacity:80%; font-size:20px;'><p className='symptoms' style='float:left;'> This patient has following symptions:</p><br><br>");
+
+        // general information body
+        newWindow.document.write("<div class='row' style = 'display:flex; width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+        // general information column left
+        newWindow.document.write("<div class='column' style = 'flex:50%'>");
+        newWindow.document.write("<p className='nameLabel'> Name:  <span style='color:black;font-size:17px;'>"+"Name PlaceHolder"+"</span></p>");
+        newWindow.document.write("<p className='nameLabel'> ID:  <span style='color:black;font-size:17px;'>"+"ID PlaceHolder"+"</span></p>");
+        newWindow.document.write("<p className='dobLabel'> Date of Birth: <span style='color:black;font-size:17px;'>"+ "DOB PlaceHolder"+ "</span></p>");
+        newWindow.document.write("</div>");
+        // general information column right
+        newWindow.document.write("<div class='column' style = 'flex:50%'>");
+        newWindow.document.write("<p className='data1'> Appointment Time: <span style='color:black;font-size:17px;'>"+"Time PlaceHolder"+"</span></p>")
+        newWindow.document.write("<p className='address'> Address: <span style='color:black;font-size:17px;'>"+"Address PlaceHolder"+"</span></p>")
+        newWindow.document.write("<p className='phone'> Phone: <span style='color:black;font-size:17px;'>"+ "Phone PlaceHolder"+ "</span></p>");
+        newWindow.document.write("</div>");
+        newWindow.document.write("</div>");
+
+        // the rest part are divided into 2 row * 2 col
+
+        // head: symptom and diagnosis in one row
+        newWindow.document.write("<div class='row' style = 'display:flex; width:93%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+        newWindow.document.write("<div class='column' style = 'flex:45%; font-weight:700; width:100%; margin-left:0em; margin-right:0.5em; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+        newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Symptoms </b>");
+        newWindow.document.write("</div>");
+        newWindow.document.write("<div class='column' style = 'flex:55%; font-weight:700; width:100%; margin-left:0.5em; margin-right:0em; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+        newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Diagnosis </b>");
+        newWindow.document.write("</div>");
+        newWindow.document.write("</div>");
+
+        // body: symptom and diagnosis
+        // symptom and diagnosis body
+        newWindow.document.write("<div class='row' style = 'display:flex; width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+        // symptom + diagnosis left column: symptom
+        newWindow.document.write("<div class='column' style = 'flex:50%'>");
         var count = 0;
-        var content = ''
-        for (var i = 0; i<reportList[id].length; i++){
+        var content = '';
+        var negaDic = {};
+        var diagDic = {};
+
+        for(var i=0;i<reportList[id].length; i++){
+            
+            var traits = reportList[id][i].Traits;
+            //console.log("!!!!traits",traits)
+            var isNegated = false;
+            if (traits !== undefined){
+              for(var j=0;j<traits.length;j++){
+                if(traits[j].Name==="NEGATION"){
+                  isNegated = true;
+                  negaDic[reportList[id][i].Term]="delete";
+                  console.log("NEGATION")
+                }
+                if(traits[j].Name==="DIAGNOSIS"){
+                  diagDic[reportList[id][i].Term]="diag";
+                  console.log("DIAGNOSIS")
+                }
+              }
+            }
+        }
+
+        for(var i=0;i<reportList[id].length;i++){
             if(reportList[id][i].Category == 'MEDICAL_CONDITION'){
                 count ++;
-                content += "<span>"+reportList[id][i].Term + "</span> "
+                if(!(reportList[id][i].Term in negaDic)&&!(reportList[id][i].Term in diagDic)){
+                    if(reportList[id][i].Score < 0.3){
+                        content += "<span style='background-color:#e97878'>"+reportList[id][i].Term + "</span>  ";
+                    }
+                    else if(reportList[id][i].Score < 0.5){
+                        content += "<span style='background-color:#f8dc81'>"+reportList[id][i].Term + "</span>  ";
+                    }
+                    else{
+                        content += "<span>"+reportList[id][i].Term + "</span>  ";
+                    }
+                    content += '<br />'
+                }
             }
-            content+="<span>&nbsp&nbsp</span>";
         }
-        if(count == 0){newWindow.document.write("<ul style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-        else{newWindow.document.write("<p style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
-        newWindow.document.write("<br></div>");
 
-        // diagnosis 
-        newWindow.document.write("<div style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#86a3c3; opacity:80%; font-size:20px;'><p className='diagnosis' style='float:left;'> The Diagnosis:</p><br><br>")
+        if(count == 0){newWindow.document.write("<ul style=' opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+        else{newWindow.document.write("<p style='font-size:20px;'>"+content+"</p>");}
+        newWindow.document.write("<br></div>");
+        newWindow.document.write("<p></p>");
+
+        // symptom + diagnosis right column: diagnosis
+        newWindow.document.write("<div class='column' style = 'flex:50%'>");
         var count =0;
         var content = '';
-        for (var i = 0; i<reportList[id].length; i++){
-            if(reportList[id][i].Category == 'DIAGNOSIS'){
+        for(var i=0;i<reportList[id].length;i++){
+            if(reportList[id][i].Category == 'MEDICAL_CONDITION'){
                 count ++;
-                content += "<span>"+reportList[id][i].Term + "</span> "
-            }
-            content+="<span>&nbsp&nbsp</span>";
+                if(reportList[id][i].Term in diagDic){
+                    if(reportList[id][i].Score < 0.3){
+                        content += "<span style='background-color:#e97878'>"+reportList[id][i].Term + "</span>  ";
+                    }
+                    else if(reportList[id][i].Score < 0.5){
+                        content += "<span style='background-color:#f8dc81'>"+reportList[id][i].Term + "</span>  ";
+                    }
+                    else{
+                        content += "<span>"+reportList[id][i].Term + "</span>  ";
+                    }
+                    content += '<br />'
+                }
+            } 
         }
-        if(count == 0){newWindow.document.write("<ul style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-        else{newWindow.document.write("<p style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
+        if(count == 0){newWindow.document.write("<ul style='color:#000000; opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+        else{newWindow.document.write("<p style='font-size:20px;'>"+content+"</p>");}
 
         newWindow.document.write("<br></div>")
+        newWindow.document.write("<p></p>");
+        newWindow.document.write("</div>");
 
-        // tests, treatments and procedure
-        newWindow.document.write("<div style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#d9dab0; opacity:80%; font-size:20px;'><p className='treatment' style='float:left;'> Tests, Treatment and Procedure:</p><br><br>")
+
+        // head: symptom and diagnosis in one row
+        newWindow.document.write("<div class='row' style = 'display:flex; width:93%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+        newWindow.document.write("<div class='column' style = 'flex:45%; font-weight:700; width:100%; margin-left:0em; margin-right:0.5em; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+        newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Test, Treatment, and Procedure </b>");
+        newWindow.document.write("</div>");
+        newWindow.document.write("<div class='column' style = 'flex:55%; font-weight:700; width:100%; margin-left:0.5em; margin-right:0em; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+        newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Medication </b>");
+        newWindow.document.write("</div>");
+        newWindow.document.write("</div>");
+
+        // Test and Medication body
+        newWindow.document.write("<div class='row' style = 'display:flex; width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+        // Test + Medication left column : Test
+        newWindow.document.write("<div class='column' style = 'flex:50%'>");
         var count = 0;
         var content='';
-        for (var i = 0; i<reportList[id].length; i++){
+        for(var i=0;i<reportList[id].length;i++){
             if(reportList[id][i].Category == 'TEST_TREATMENT_PROCEDURE'){
-                count ++;
-                content += "<span>"+reportList[id][i].Term + "</span> "
-            }
-            content+="<span>&nbsp&nbsp</span>";
-        }
-        if(count == 0){newWindow.document.write("<ul style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-        else{newWindow.document.write("<p style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
-        newWindow.document.write("<br></div>")
+              count ++;
+              if(reportList[id][i].Score < 0.3){
+                content += "<span style='background-color:#e97878'>"+reportList[id][i].Term + "</span>  ";
+              }
+              else if(reportList[id][i].Score < 0.5){
+                content += "<span style='background-color:#f8dc81'>"+reportList[id][i].Term + "</span>  ";
+              }
+              else{
+                content += "<span>"+reportList[id][i].Term + "</span>  ";
+              }
+              content += '<br />'
+          }}
 
-        // medication
-        newWindow.document.write("<div style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#86a3c3; opacity:80%; font-size:20px;'><p className='medication'style='float:left;'> Medication for this patient:</p><br><br>")
+        if(count == 0){newWindow.document.write("<ul style='color:#000000; opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+        else{newWindow.document.write("<p style='font-size:20px; '>"+content+"</p>");}
+        newWindow.document.write("<br></div>")
+        newWindow.document.write("<p></p>");
+        
+        // Test + Medication right column : Medication
+        newWindow.document.write("<div class='column' style = 'flex:50%'>");
         var count = 0;
         var content='';
-        for (var i = 0; i<reportList[id].length; i++){
+        for(var i=0;i<reportList[id].length;i++){
             if(reportList[id][i].Category == 'MEDICATION'){
-                count ++;
-                content += "<span>"+reportList[id][i].Term + "</span> "
-            }
-            content+="<span>&nbsp&nbsp</span>";
-        }
-        if(count == 0){newWindow.document.write("<ul style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-        else{newWindow.document.write("<p style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
+              count ++;
+              if(reportList[id][i].Score < 0.3){
+                content += "<span style='background-color:#e97878'>"+reportList[id][i].Term + "</span>  ";
+              }
+              else if(reportList[id][i].Score < 0.5){
+                content += "<span style='background-color:#f8dc81'>"+reportList[id][i].Term + "</span>  ";
+              }
+              else{
+                content += "<span>"+reportList[id][i].Term + "</span>  ";
+              }
+              content += '<br />'
+          }}
+
+        if(count == 0){newWindow.document.write("<ul style='color:#000000; opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+        else{newWindow.document.write("<p style='font-size:20px;color:'>"+content+"</p>");}
+        newWindow.document.write("</div>")
 
         newWindow.document.write("<br></div><br></br>")
         newWindow.document.write('</div></body></html>');

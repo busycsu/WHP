@@ -254,31 +254,64 @@ class DoctorHome extends React.Component {
       console.log('keys',id);
       var newWindow = window.open();
       // head style
-      newWindow.document.write("<html><head><title>Report</title><style>button:hover{background-color:#f6f5f5;cursor:pointer; color:white;box-shadow: 2px 0px 10px 3px rgba(114,114,114,0.79);}");
+      newWindow.document.write('<html><head><title>Report</title><style>');
       newWindow.document.write("</style>");
 
-      // body
-      newWindow.document.write("</head><body className='bg' style='background-color:#e2e6e9'><div style='margin-left:auto;margin-right:auto;width:70%; padding-top:2em; overflow-y:scroll;'>");
-      newWindow.document.write("<div className='info' style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);border:none; padding-left:2em; padding-right:2em; padding-top:0.5em; padding-bottom:0.4em; border-width:0.1px; border-radius:10px; background-color:#86a3c3; opacity:80%; font-size:20px;'>");
-      newWindow.document.write("<p className='nameLabel' > Patient Name:  <span style='color:white;font-size:30px;'>"+id+"</span></p>");
-      newWindow.document.write("<p className='dobLabel'> Date of Birth: <span style='color:white;font-size:30px;'>"+ "11/11/1998"+ "</span></p>");
+      // Title
+      newWindow.document.write("<div className='info' style='width:50%; margin-left:auto; margin-right:auto; border:none; padding-left:2em; padding-right:2em; padding-top:1em; padding-bottom:4em; border-width:0.1px; border-radius:10px; background-color:#FFFFFF; opacity:80%; font-size:40px; font-weight:2000;'>");
+      newWindow.document.write("<div style='text-align:center;'>Clinical Summary</div>");
+
+      // general information head with grey color
+      newWindow.document.write("<body className='bg' style='background-color:#e2e6e9'><div style='margin-left:auto;margin-right:auto;width:100%; padding-top:0.5em;'>");
+      newWindow.document.write("<div className='info' style='width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:17px;'>");
+      newWindow.document.write("<b style='font-size:20px;font-weight:700;'> General Information </b>");
+      newWindow.document.write("</div>");
+
+      // general information body
+      newWindow.document.write("<div class='row' style = 'display:flex; width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+      // general information column left
+      newWindow.document.write("<div class='column' style = 'flex:50%'>");
+      newWindow.document.write("<p className='nameLabel'> Name:  <span style='color:black;font-size:17px;'>"+"Name PlaceHolder"+"</span></p>");
+      newWindow.document.write("<p className='nameLabel'> ID:  <span style='color:black;font-size:17px;'>"+"ID PlaceHolder"+"</span></p>");
+      newWindow.document.write("<p className='dobLabel'> Date of Birth: <span style='color:black;font-size:17px;'>"+ "DOB PlaceHolder"+ "</span></p>");
+      newWindow.document.write("</div>");
+      // general information column right
+      newWindow.document.write("<div class='column' style = 'flex:50%'>");
+      newWindow.document.write("<p className='data1'> Appointment Time: <span style='color:black;font-size:17px;'>"+"Time PlaceHolder"+"</span></p>")
+      newWindow.document.write("<p className='address'> Address: <span style='color:black;font-size:17px;'>"+"Address PlaceHolder"+"</span></p>")
+      newWindow.document.write("<p className='phone'> Phone: <span style='color:black;font-size:17px;'>"+ "Phone PlaceHolder"+ "</span></p>");
+      newWindow.document.write("</div>");
+      newWindow.document.write("</div>");
  
       var snapTMP = patientNameDic[id];
           snapTMP.forEach(function(childNodes){
             if(childNodes.val().datetime.trim() == date.replace('-','').trim()){
-              newWindow.document.write("<p className='data1'> Appointment Time: <span style='color:white;font-size:30px;'>"+childNodes.val().datetime+"</span></p>")
-              newWindow.document.write("</div>");  
+              // newWindow.document.write("<p className='data1'> Appointment Time: <span style='color:white;font-size:30px;'>"+childNodes.val().datetime+"</span></p>")
+              // newWindow.document.write("</div>");  
 
               var tmpReportList = childNodes.val().content;
 
-              // Symptoms
-              newWindow.document.write("<div style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#d9dab0; opacity:80%; font-size:20px;'><p className='symptoms' style='float:left;'> This patient has following symptions:</p><br><br>");
+              // head: symptom and diagnosis in one row
+              newWindow.document.write("<div class='row' style = 'display:flex; width:93%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+              newWindow.document.write("<div class='column' style = 'flex:45%; font-weight:700; width:100%; margin-left:0em; margin-right:0.5em; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+              newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Symptoms </b>");
+              newWindow.document.write("</div>");
+              newWindow.document.write("<div class='column' style = 'flex:55%; font-weight:700; width:100%; margin-left:0.5em; margin-right:0em; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+              newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Diagnosis </b>");
+              newWindow.document.write("</div>");
+              newWindow.document.write("</div>");
+
+              // body: symptom and diagnosis
+              // symptom and diagnosis body
+              newWindow.document.write("<div class='row' style = 'display:flex; width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+              // symptom + diagnosis left column: symptom
+              newWindow.document.write("<div class='column' style = 'flex:50%'>");
               var count = 0;
               var content = '';
 
               // new change for negation
               var negaDic = {};
-              var diagDic = {}
+              var diagDic = {};
               console.log(tmpReportList)
               for(var i=0;i<tmpReportList.length; i++){
                 var traits = tmpReportList[i].Traits;
@@ -311,16 +344,17 @@ class DoctorHome extends React.Component {
                     else{
                       content += "<span>"+tmpReportList[i].Term + "</span>  ";
                     }
-                    content += '<span>&nbsp&nbsp</span>'
+                    content += '<br />'
                   }
                   
               }}
-              if(count == 0){newWindow.document.write("<ul contentEditable='true'style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-              else{newWindow.document.write("<p contentEditable='true'style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
+              if(count == 0){newWindow.document.write("<ul style=' opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+              else{newWindow.document.write("<p style='font-size:20px;'>"+content+"</p>");}
               newWindow.document.write("<br></div>");
+              newWindow.document.write("<p></p>");
 
-              // diagnosis
-              newWindow.document.write("<div style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#86a3c3; opacity:80%; font-size:20px;'><p className='diagnosis' style='float:left;'> The Diagnosis:</p><br><br>")
+              // symptom + diagnosis right column: diagnosis
+              newWindow.document.write("<div class='column' style = 'flex:50%'>");
               var count = 0;
               var content = '';
               for(var i=0;i<tmpReportList.length;i++){
@@ -336,29 +370,29 @@ class DoctorHome extends React.Component {
                     else{
                       content += "<span>"+tmpReportList[i].Term + "</span>  ";
                     }
-                    content += '<span>&nbsp&nbsp</span>'
+                    content += '<br />'
                   }
               }}
-              // for(var i=0;i<tmpReportList.length;i++){
-              //   if(tmpReportList[i].Category == 'DIAGNOSIS'){
-              //     count ++;
-              //     if(tmpReportList[i].Score < 0.3){
-              //       content += "<span style='background-color:#e97878'>"+tmpReportList[i].Term + "</span>  ";
-              //     }
-              //     else if(tmpReportList[i].Score < 0.5){
-              //       content += "<span style='background-color:#f8dc81'>"+tmpReportList[i].Term + "</span>  ";
-              //     }
-              //     else{
-              //       content += "<span>"+tmpReportList[i].Term + "</span>  ";
-              //     }
-              //     content += '<span>&nbsp&nbsp</span>'
-              // }}
-              if(count == 0){newWindow.document.write("<ul contentEditable='true' style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-              else{newWindow.document.write("<p contentEditable='true' style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
+              if(count == 0){newWindow.document.write("<ul style='color:#000000; opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+              else{newWindow.document.write("<p style='font-size:20px;'>"+content+"</p>");}
               newWindow.document.write("<br></div>");
+              newWindow.document.write("<p></p>");
+              newWindow.document.write("</div>");
 
-              // tests,treatments and procedure
-              newWindow.document.write("<div style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#D9DAB0; opacity:80%; font-size:20px;'><p className='diagnosis' style='float:left;'> Tests, Treatments and Procedure:</p><br><br>")
+              // head: symptom and diagnosis in one row
+              newWindow.document.write("<div class='row' style = 'display:flex; width:93%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+              newWindow.document.write("<div class='column' style = 'flex:45%; font-weight:700; width:100%; margin-left:0em; margin-right:0.5em; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+              newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Test, Treatment, and Procedure </b>");
+              newWindow.document.write("</div>");
+              newWindow.document.write("<div class='column' style = 'flex:55%; font-weight:700; width:100%; margin-left:0.5em; margin-right:0em; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#cccccc; opacity:100%; font-size:20px;>");
+              newWindow.document.write("<b style='font-size:20px;font-weight:700;'> Medication </b>");
+              newWindow.document.write("</div>");
+              newWindow.document.write("</div>");
+
+              // Test and Medication body
+              newWindow.document.write("<div class='row' style = 'display:flex; width:90%; margin-left:auto; margin-right:auto; padding-left:1em; padding-right:1em; padding-top:0.1em; padding-bottom:0.1em; border-width:0.1px; border-radius:5px; background-color:#FFFFFF; opacity:100%; font-size:17px;'>");
+              // Test + Medication left column : Test
+              newWindow.document.write("<div class='column' style = 'flex:50%'>");
               var count = 0;
               var content = '';
               for(var i=0;i<tmpReportList.length;i++){
@@ -373,14 +407,15 @@ class DoctorHome extends React.Component {
                   else{
                     content += "<span>"+tmpReportList[i].Term + "</span>  ";
                   }
-                  content += '<span>&nbsp&nbsp</span>'
+                  content += '<br />'
               }}
-              if(count == 0){newWindow.document.write("<ul contentEditable='true'style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-              else{newWindow.document.write("<p contentEditable='true'style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
+              if(count == 0){newWindow.document.write("<ul style='color:#000000; opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+              else{newWindow.document.write("<p style='font-size:20px; '>"+content+"</p>");}
               newWindow.document.write("<br></div>");
+              newWindow.document.write("<p></p>");
 
-              // medication
-              newWindow.document.write("<div  style='width:50%; margin-left:auto; margin-right:auto; box-shadow: 2px 0px 20px 3px rgba(114,114,114,0.79);text-align:center; border:none; padding-left:2em; padding-right:2em;margin-top:0.7em;border-width:0.1px; border-radius:10px; background-color:#86a3c3; opacity:80%; font-size:20px;'><p className='diagnosis' style='float:left;'> Medication for this patient:</p><br><br>")
+              // Test + Medication right column : Medication
+              newWindow.document.write("<div class='column' style = 'flex:50%'>");
               var count = 0;
               var content = '';
               for(var i=0;i<tmpReportList.length;i++){
@@ -395,10 +430,11 @@ class DoctorHome extends React.Component {
                   else{
                     content += "<span>"+tmpReportList[i].Term + "</span>  ";
                   }
-                  content += '<span>&nbsp&nbsp</span>'
+                  content += '<br />'
               }}
-              if(count == 0){newWindow.document.write("<ul contentEditable='true'style='color:#ffffff; opacity:80%; font-size:23px;'>None Recorded&nbsp&nbsp</ul>")}
-              else{newWindow.document.write("<p contentEditable='true' style='font-size:25px;color:#5c2c1f; font-weight:700;'>"+content+"</p>");}
+              if(count == 0){newWindow.document.write("<ul style='color:#000000; opacity:80%; font-size:20px;'>None Recorded&nbsp&nbsp</ul>")}
+              else{newWindow.document.write("<p style='font-size:20px;color:'>"+content+"</p>");}
+              newWindow.document.write("</div>")
               newWindow.document.write("<br></div>");
 
 
